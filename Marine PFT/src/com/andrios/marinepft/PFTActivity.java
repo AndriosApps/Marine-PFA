@@ -22,17 +22,19 @@ public class PFTActivity extends Activity {
 	
 	RadioButton maleRDO, femaleRDO;
 	CheckBox weightCheckBox, SitReachCheckBox;
-	SeekBar ageSeekBar, pullupSeekBar, situpSeekBar, runSeekBar;
-	TextView ageLBL, pullupLBL, pullupTXTLBL, situpLBL, minutesLBL, runLBL, scoreLBL;
+	SeekBar ageSeekBar, pullupSeekBar, crunchSeekBar, runSeekBar;
+	TextView ageLBL, pullupLBL, pullupTXTLBL, crunchLBL, minutesLBL, runLBL, scoreLBL;
+	TextView pullupFailLBL, crunchFailLBL, runFailLBL;
 	Button minuteUpBTN, minuteDownBTN, secondUpBTN, secondDownBTN;
-	Button ageUpBTN, ageDownBTN, pushupUpBTN, pushupDownBTN, situpUpBTN, situpDownBTN;
+	Button ageUpBTN, ageDownBTN, pushupUpBTN, pushupDownBTN, crunchUpBTN, crunchDownBTN;
 	AndriosData mData;
 	AdView adView;
 	AdRequest request;
 	GoogleAnalyticsTracker tracker;
-	boolean pushupchanged = false, situpchanged = false, runchanged = false;
+	boolean pullupchanged = false, crunchchanged = false, runchanged = false;
 	
-	int age = 18, pullups = 0, situps = 0, runtime = 0, minutes, seconds;
+	int age = 18, pullups = 0, crunches = 0, runtime = 0, minutes, seconds;
+	int runScore, pullupScore, crunchScore, totalScore;
 	boolean male;
 	
     @Override
@@ -76,32 +78,36 @@ public class PFTActivity extends Activity {
 
 		ageSeekBar = (SeekBar) findViewById(R.id.calculatorAgeSeekBar); 
 		pullupSeekBar = (SeekBar) findViewById(R.id.calculatorPullupSeekBar); 
-		situpSeekBar = (SeekBar) findViewById(R.id.calculatorSitUpSeekBar);
+		crunchSeekBar = (SeekBar) findViewById(R.id.calculatorcrunchSeekBar);
 		runSeekBar = (SeekBar) findViewById(R.id.calculatorRunTimeSeekBar);
 		 
 		scoreLBL = (TextView) findViewById(R.id.calculatorScoreLBL);
 		ageLBL = (TextView) findViewById(R.id.calculatorAgeLBL);
 		pullupLBL = (TextView) findViewById(R.id.calculatorPullUpLBL);
 		pullupTXTLBL = (TextView) findViewById(R.id.calculatorPullUpTXTLBL);
-		situpLBL = (TextView) findViewById(R.id.calculatorSitUpLBL);
+		crunchLBL = (TextView) findViewById(R.id.calculatorcrunchLBL);
 		runLBL = (TextView) findViewById(R.id.calculatorRunLBL);
+		pullupFailLBL = (TextView) findViewById(R.id.calculatorPullupFailLBL);
+		crunchFailLBL = (TextView) findViewById(R.id.calculatorCrunchFailLBL);
+		runFailLBL = (TextView) findViewById(R.id.calculatorRunFailLBL);
+		
 		
 
 		ageUpBTN = (Button) findViewById(R.id.calculatorAgeUpBTN);
 		pushupUpBTN = (Button) findViewById(R.id.calculatorPushupsUpBTN);
-		situpUpBTN = (Button) findViewById(R.id.calculatorSitupsUpBTN);
+		crunchUpBTN = (Button) findViewById(R.id.calculatorcrunchsUpBTN);
 		secondUpBTN = (Button) findViewById(R.id.calculatorSecondsUpBTN);
 
 		ageDownBTN = (Button) findViewById(R.id.calculatorAgeDownBTN);
 		pushupDownBTN = (Button) findViewById(R.id.calculatorPushupsDownBTN);
-		situpDownBTN = (Button) findViewById(R.id.calculatorSitupsDownBTN);
+		crunchDownBTN = (Button) findViewById(R.id.calculatorcrunchsDownBTN);
 		secondDownBTN = (Button) findViewById(R.id.calculatorSecondsDownBTN);
 		
 		ageSeekBar.setMax(80);//max age 100
 		ageSeekBar.setProgress(18);
 		
 		pullupSeekBar.setMax(25);//max pullups is 20 FAH 70 sec
-		situpSeekBar.setMax(100);//max situps is 100 male / female
+		crunchSeekBar.setMax(100);//max crunchs is 100 male / female
 		runSeekBar.setMax(2100);//max runtime 29:10 (female) 35 min * 60 = 2100
 		
 		adView = (AdView)this.findViewById(R.id.homeAdView);
@@ -136,7 +142,7 @@ public class PFTActivity extends Activity {
 			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
 				pullups = arg1;
 				pullupLBL.setText(Integer.toString(pullups));
-				pushupchanged = true;
+				pullupchanged = true;
 				calculateScore();
 				
 			}
@@ -151,12 +157,12 @@ public class PFTActivity extends Activity {
 			
 		});
 		
-		situpSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+		crunchSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 
 			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-				situps = arg1;
-				situpLBL.setText(Integer.toString(situps));
-				situpchanged = true;
+				crunches = arg1;
+				crunchLBL.setText(Integer.toString(crunches));
+				crunchchanged = true;
 				calculateScore();
 				
 			}
@@ -222,15 +228,15 @@ public class PFTActivity extends Activity {
 			
 		});
 		
-		situpUpBTN.setOnClickListener(new OnClickListener(){
+		crunchUpBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
-				situps += 1;
-				if(situps > 110){
-					situps = 110;
+				crunches += 1;
+				if(crunches > 110){
+					crunches = 110;
 				}
 				
-				situpSeekBar.setProgress(situps);
+				crunchSeekBar.setProgress(crunches);
 				
 				calculateScore();
 			}
@@ -241,8 +247,8 @@ public class PFTActivity extends Activity {
 
 			public void onClick(View v) {
 				runtime += 1;
-				if(runtime > 1080){
-					runtime = 1080;
+				if(runtime > 2100){
+					runtime = 2100;
 				}
 				minutes = (Integer) runtime / 60;
 				seconds = runtime % 60;
@@ -284,15 +290,15 @@ public class PFTActivity extends Activity {
 			
 		});
 		
-		situpDownBTN.setOnClickListener(new OnClickListener(){
+		crunchDownBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
-				situps -= 1;
-				if(situps < 0){
-					situps = 0;
+				crunches -= 1;
+				if(crunches < 0){
+					crunches = 0;
 				}
 				
-				situpSeekBar.setProgress(situps);
+				crunchSeekBar.setProgress(crunches);
 				
 				calculateScore();
 			}
@@ -319,22 +325,27 @@ public class PFTActivity extends Activity {
 		maleRDO.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				
+				pullups = 0;
+				pullupchanged = false;
 				if(maleRDO.isChecked()){
-					pullupTXTLBL.setText("Pullups (Reps)");
-					if(pullupSeekBar.getProgress() > 25){
-						pullups = 0;
-						pullupSeekBar.setProgress(pullups);
-						pullupLBL.setText(Integer.toString(pullups));
-					}
+					pullupTXTLBL.setText("Pullups");
+					
+
+					pullupSeekBar.setProgress(pullups);
 					pullupSeekBar.setMax(25);
+					pullupLBL.setText(Integer.toString(pullups));
+					
+					
 				}else{
-					pullupTXTLBL.setText("Flexed Arm Hang (Seconds)");
-					if(pullupSeekBar.getProgress() > 25){
-						pullups = 0;
-						pullupSeekBar.setProgress(pullups);
-						pullupLBL.setText(Integer.toString(pullups));
-					}
+					pullupTXTLBL.setText("FAH");
+					
+
+					pullupSeekBar.setProgress(pullups);
 					pullupSeekBar.setMax(75);
+					pullupLBL.setText(Integer.toString(pullups));
+					
+					
 				}
 			
 				
@@ -374,213 +385,243 @@ public class PFTActivity extends Activity {
 	}
 	
 	private void calculateScore(){
-		if(maleRDO.isChecked()){
-			if(age < 20){
-				calculateMale(mData.pushupMale17, mData.situpMale17, mData.runMale17);
-			}else if(age < 25){
-				calculateMale(mData.pushupMale20, mData.situpMale20, mData.runMale20);
-			}else if(age < 30){
-				calculateMale(mData.pushupMale25, mData.situpMale25, mData.runMale25);
-			}else if(age < 35){
-				calculateMale(mData.pushupMale30, mData.situpMale30, mData.runMale30);
-			}else if(age < 40){
-				calculateMale(mData.pushupMale35, mData.situpMale35, mData.runMale35);
-			}else if(age < 45){
-				calculateMale(mData.pushupMale40, mData.situpMale40, mData.runMale40);
-			}else if(age < 50){
-				calculateMale(mData.pushupMale45, mData.situpMale45, mData.runMale45);
-			}else if(age < 55){
-				calculateMale(mData.pushupMale50, mData.situpMale50, mData.runMale50);
-			}else if(age < 60){
-				calculateMale(mData.pushupMale55, mData.situpMale55, mData.runMale55);
-			}else if(age < 65){
-				calculateMale(mData.pushupMale60, mData.situpMale60, mData.runMale60);
+		
+			scoreRun();
+			scorePullups();
+			scoreCrunches();
+		if(pullupchanged && crunchchanged && runchanged){	
+			if(runScore == 0 || pullupScore == 0 || crunchScore == 0){
+				totalScore = 0;
 			}else{
-				calculateMale(mData.pushupMale65, mData.situpMale65, mData.runMale65);
+				totalScore = (runScore + pullupScore + crunchScore);
 			}
+			
+			
+			
+			
+			if(!weightCheckBox.isChecked() || totalScore == 0){
+				if(changed()){
+					scoreLBL.setText("Fail");
+				}
+			}else{
+				if(age <= 26){
+					if(totalScore >= 225){
+
+						scoreLBL.setText("1st Class: " + Integer.toString(totalScore));
+					}else if(totalScore >= 175){
+						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
+					}else if(totalScore >= 135){
+						scoreLBL.setText("3d Class: " + Integer.toString(totalScore));
+					}else{
+						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
+					}
+				}else if(age <= 39){
+					if(totalScore >= 200){
+
+						scoreLBL.setText("1st Class: " + Integer.toString(totalScore));
+					}else if(totalScore >= 150){
+						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
+					}else if(totalScore >= 110){
+						scoreLBL.setText("3d Class: " + Integer.toString(totalScore));
+					}else{
+						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
+					}
+				}else if(age <= 45){
+					if(totalScore >= 175){
+
+						scoreLBL.setText("1st Class: " + Integer.toString(totalScore));
+					}else if(totalScore >= 125){
+						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
+					}else if(totalScore >= 88){
+						scoreLBL.setText("3d Class: " + Integer.toString(totalScore));
+					}else{
+						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
+					}
+				}else if(age >= 46){
+					if(totalScore >= 150){
+
+						scoreLBL.setText("1st Class: " + Integer.toString(totalScore));
+					}else if(totalScore >= 100){
+						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
+					}else if(totalScore >= 65){
+						scoreLBL.setText("3d Class: " + Integer.toString(totalScore));
+					}else{
+						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
+					}
+				}
+			}
+		}else{
+			scoreLBL.setText("Enter required metrics");
+		}
+		
+		
+	}
+
+
+
+
+	
+	private void scoreRun(){
+		System.out.println("Seconds: " + runtime);
+		
+		if(maleRDO.isChecked()){
+			
+				int time = 1980;
+				runScore = 9;
+				while(runtime <= time ){
+					time =  time - 10;
+					runScore++;
+					if(runScore >= 100){
+						runScore = 100;
+						break;
+					}
+				}
 			
 		}else{
-			if(age < 20){
-				calculateFemale(mData.pushupFemale17, mData.situpFemale17, mData.runFemale17);
-			}else if(age < 25){
-				calculateFemale(mData.pushupFemale20, mData.situpFemale20, mData.runFemale20);
-			}else if(age < 30){
-				calculateFemale(mData.pushupFemale25, mData.situpFemale25, mData.runFemale25);
-			}else if(age < 35){
-				calculateFemale(mData.pushupFemale30, mData.situpFemale30, mData.runFemale30);
-			}else if(age < 40){
-				calculateFemale(mData.pushupFemale35, mData.situpFemale35, mData.runFemale35);
-			}else if(age < 45){
-				calculateFemale(mData.pushupFemale40, mData.situpFemale40, mData.runFemale40);
-			}else if(age < 50){
-				calculateFemale(mData.pushupFemale45, mData.situpFemale45, mData.runFemale45);
-			}else if(age < 55){
-				calculateFemale(mData.pushupFemale50, mData.situpFemale50, mData.runFemale50);
-			}else if(age < 60){
-				calculateFemale(mData.pushupFemale55, mData.situpFemale55, mData.runFemale55);
-			}else if(age < 65){
-				calculateFemale(mData.pushupFemale60, mData.situpFemale60, mData.runFemale60);
-			}else{
-				calculateFemale(mData.pushupFemale65, mData.situpFemale65, mData.runFemale65);
-			}
-		}
-		
-		if(!weightCheckBox.isChecked() || !SitReachCheckBox.isChecked()){
-			if(changed()){
-				scoreLBL.setText("Fail");
-			}
-		}
-		
-	}
-
-
-
-	private void calculateMale(int[] pushupMale, int[] situpMale, int[] runMale) {
-		int totalScore = 0;
-		int[] Scores = {45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100};
-		boolean fail0 = true;//pullups
-		boolean fail1 = true;//situps
-		boolean fail2 = true;//run
-		for(int i = 11; i >= 0; i--){
-			if(pullups >= pushupMale[i]){
-				if(i > 0){
-					totalScore += Scores[i];
-					fail0 = false;
-				}
-				
-				break;
-			}
-		}
-		for(int i = 11; i >= 0; i--){
-			if(situps >= situpMale[i]){
-				if(i > 0){
-					totalScore += Scores[i];
-					fail1 = false;
-				}	
 			
-				break;
-			}
-		}
-		for(int i = 11; i >= 0; i--){
-			if(runtime <= runMale[i]){
-				if(i > 0){
-					totalScore += Scores[i];
-					fail2 = false;
+				int time = 2160;
+				runScore = 9;
+				while(runtime <= time ){
+					time =  time - 10;
+					runScore++;
+					if(runScore >= 100){
+						runScore = 100;
+						break;
+					}
 				}
-				break;
-			}
+			
 		}
-		
-		if(!fail0 && !fail1 && !fail2 && changed()){
-
-			if((totalScore / 3) < 50){
-				scoreLBL.setText("Probationary");
-			}else if((totalScore / 3) < 55){
-				scoreLBL.setText("Satisfactory Medium");
-			}else if((totalScore / 3)< 60){
-				scoreLBL.setText("Satisfactory High");
-			}else if((totalScore / 3)< 65){
-				scoreLBL.setText("Good Low");
-			}else if((totalScore / 3)< 70){
-				scoreLBL.setText("Good Medium");
-			}else if((totalScore / 3)< 75){
-				scoreLBL.setText("Good High");
-			}else if((totalScore / 3)< 80){
-				scoreLBL.setText("Excellent Low");
-			}else if((totalScore / 3)< 85){
-				scoreLBL.setText("Excellent Medium");
-			}else if((totalScore / 3)< 90){
-				scoreLBL.setText("Excellent High");
-			}else if((totalScore / 3) < 95){
-				scoreLBL.setText("Outstanding Low");
-			}else if((totalScore / 3) < 100){
-				scoreLBL.setText("Outstanding Medium");
-			}else if((totalScore / 3) == 100){
-				scoreLBL.setText("Outstanding High");
-			}
-		}else if(changed()){
-			scoreLBL.setText("Fail");
-		}
-	
-		
+		scoreMinRun();
 		
 	}
-
-
-
-	private void calculateFemale(int[] pushupFemale, int[] situpFemale, int[] runFemale) {
-		int totalScore = 0;
-		int[] Scores = {45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100};
-		boolean fail0 = true;//pullups
-		boolean fail1 = true;//situps
-		boolean fail2 = true;//run
-		for(int i = 11; i >= 0; i--){
-			if(pullups >= pushupFemale[i]){
-				if(i > 0){
-					totalScore += Scores[i];
-					fail0 = false;
-				}
-				break;
-			}
-		}
-		for(int i = 11; i >= 0; i--){
-			if(situps >= situpFemale[i]){
-				if(i > 0){
-					totalScore += Scores[i];
-					fail1=false;
-				}	
-				
-				break;
-			}
-		}
-		for(int i = 11; i >= 0; i--){
-			if(runtime <= runFemale[i]){
-				if(i > 0){
-					totalScore += Scores[i];
-					fail2 = false;
-				}
-				break;
-			}
-		}
-		
-		if(!fail0 && !fail1 && !fail2 && changed()){
-
-			if((totalScore / 3) < 50){
-				scoreLBL.setText("Probationary");
-			}else if((totalScore / 3) < 55){
-				scoreLBL.setText("Satisfactory Medium");
-			}else if((totalScore / 3)< 60){
-				scoreLBL.setText("Satisfactory High");
-			}else if((totalScore / 3)< 65){
-				scoreLBL.setText("Good Low");
-			}else if((totalScore / 3)< 70){
-				scoreLBL.setText("Good Medium");
-			}else if((totalScore / 3)< 75){
-				scoreLBL.setText("Good High");
-			}else if((totalScore / 3)< 80){
-				scoreLBL.setText("Excellent Low");
-			}else if((totalScore / 3)< 85){
-				scoreLBL.setText("Excellent Medium");
-			}else if((totalScore / 3)< 90){
-				scoreLBL.setText("Excellent High");
-			}else if((totalScore / 3) < 95){
-				scoreLBL.setText("Outstanding Low");
-			}else if((totalScore / 3) < 100){
-				scoreLBL.setText("Outstanding Medium");
-			}else if((totalScore / 3) == 100){
-				scoreLBL.setText("Outstanding High");
-			}
-		}else if(changed()){
-			scoreLBL.setText("Fail");
-		}
 	
-		
-		
+	private void scoreMinRun(){
+		if(maleRDO.isChecked()){
+			if(age<=26){
+				if(runtime > 1680){
+					runScore = 0;
+				}
+			}else if(age <= 39){
+				if(runtime > 1740){
+					runScore = 0;
+				}
+			}else if(age <= 45){
+				if(runtime > 1800){
+					runScore = 0;
+				}
+			}else if(age > 45){
+				if(runtime > 1980){
+					runScore = 0;
+				}
+			}
+		}else{
+			if(age<=26){
+				if(runtime > 1860){
+					runScore = 0;
+				}
+			}else if(age <= 39){
+				if(runtime > 1920){
+					runScore = 0;
+				}
+			}else if(age <= 45){
+				if(runtime > 1980){
+					runScore = 0;
+				}
+			}else if(age > 45){
+				if(runtime > 2160){
+					runScore = 0;
+				}
+			}
+		}
+		if(runScore > 0){
+			runFailLBL.setText(Integer.toString(runScore));
+		}else{
+			runFailLBL.setText("Fail");
+		}
+	}
+	
+	private void scorePullups(){
+		if(maleRDO.isChecked()){
+			if(pullups >= 20){
+				pullupScore = 100;
+			}else if(pullups >= 19){
+				pullupScore = 95;
+			}else if(pullups >= 18){
+				pullupScore = 90;
+			}else if(pullups >= 17){
+				pullupScore = 85;
+			}else if(pullups >= 16){
+				pullupScore = 80;
+			}else if(pullups >= 15){
+				pullupScore = 75;
+			}else if(pullups >= 14){
+				pullupScore = 70;
+			}else if(pullups >= 13){
+				pullupScore = 65;
+			}else if(pullups >= 12){
+				pullupScore = 60;
+			}else if(pullups >= 11){
+				pullupScore = 55;
+			}else if(pullups >= 10){
+				pullupScore = 50;
+			}else if(pullups >= 9){
+				pullupScore = 45;
+			}else if(pullups >= 8){
+				pullupScore = 40;
+			}else if(pullups >= 7){
+				pullupScore = 35;
+			}else if(pullups >= 6){
+				pullupScore = 30;
+			}else if(pullups >= 5){
+				pullupScore = 25;
+			}else if(pullups >= 4){
+				pullupScore = 20;
+			}else if(pullups >= 3){
+				pullupScore = 15;
+			}else{
+				pullupScore = 0;
+			}
+		}else{
+			int num = 70 - pullups;
+			if(num <= 0){
+				pullupScore = 100;
+			}else if(num > 55){
+				pullupScore = 0;
+			}else{
+				pullupScore = 2*(70 - num);
+			}
+		}
+		if(pullupScore > 0){
+			pullupFailLBL.setText(Integer.toString(pullupScore));
+		}else{
+			pullupFailLBL.setText("Fail");
+		}
+	}
+	
+	
+
+
+
+	private void scoreCrunches(){
+		if(crunches >= 50){
+			crunchScore = crunches;
+		}else if(crunches >= 45 && age >= 27){
+			crunchScore = crunches;
+		}else if(crunches >=40 && age >= 46){
+			crunchScore = crunches;
+		}else{
+			crunchScore = 0;
+		}
+		if(crunchScore > 0){
+			crunchFailLBL.setText(Integer.toString(crunchScore));
+		}else{
+			crunchFailLBL.setText("Fail");
+		}
 	}
 	
 	private boolean changed(){
 		boolean changed = false;
-		if(runchanged && situpchanged && pushupchanged){
+		if(runchanged && crunchchanged && pullupchanged){
 			changed = true;
 		}
 		
@@ -593,7 +634,7 @@ public class PFTActivity extends Activity {
 	
 	public void onPause(){
 		super.onPause();
-		tracker.dispatch();
+		//tracker.dispatch();
 	}
 
 }

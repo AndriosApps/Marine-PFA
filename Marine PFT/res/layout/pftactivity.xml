@@ -29,7 +29,8 @@
         </LinearLayout>
         <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout5" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:layout_width="260dip">
             <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout11">
-                <TextView android:layout_height="wrap_content" android:text="Pullups" android:layout_width="1px" android:id="@+id/calculatorPullUpTXTLBL" android:layout_weight="2" android:gravity="center|right"></TextView>
+                <TextView android:layout_height="wrap_content" android:layout_weight="1" android:text="Fail" android:layout_width="1px" android:gravity="center" android:id="@+id/calculatorPullupFailLBL"></TextView>
+                <TextView android:layout_height="wrap_content" android:text="Pullups" android:layout_width="1px" android:id="@+id/calculatorPullUpTXTLBL" android:layout_weight="1" android:gravity="center"></TextView>
                 <TextView android:layout_height="wrap_content" android:layout_weight="1" android:text="0" android:layout_width="1px" android:id="@+id/calculatorPullUpLBL"></TextView>
             </LinearLayout>
             <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout20" android:layout_height="wrap_content">
@@ -40,19 +41,23 @@
         </LinearLayout>
         <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout6" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:layout_width="260dip">
             <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout8">
-                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout15" android:layout_weight="1" android:layout_width="1px"></LinearLayout>
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout15" android:layout_weight="1" android:layout_width="1px" android:gravity="center">
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Fail" android:id="@+id/calculatorCrunchFailLBL"></TextView>
+                </LinearLayout>
                 <TextView android:layout_height="wrap_content" android:text="Crunches" android:id="@+id/textView7" android:layout_weight="1" android:layout_width="1px" android:gravity="center"></TextView>
-                <TextView android:layout_height="wrap_content" android:layout_weight="1" android:text="0" android:layout_width="1px" android:id="@+id/calculatorSitUpLBL"></TextView>
+                <TextView android:layout_height="wrap_content" android:layout_weight="1" android:text="0" android:layout_width="1px" android:id="@+id/calculatorcrunchLBL"></TextView>
             </LinearLayout>
             <LinearLayout android:id="@+id/linearLayout19" android:layout_height="fill_parent" android:layout_width="fill_parent">
-                <Button android:layout_width="30dip" android:layout_weight="0" android:background="@drawable/minus" android:layout_height="30dip" android:id="@+id/calculatorSitupsDownBTN"></Button>
-                <SeekBar android:layout_width="fill_parent" android:id="@+id/calculatorSitUpSeekBar" android:layout_height="wrap_content" android:layout_weight="1"></SeekBar>
-                <Button android:layout_width="30dip" android:layout_weight="0" android:background="@drawable/plus" android:layout_height="30dip" android:id="@+id/calculatorSitupsUpBTN"></Button>
+                <Button android:layout_width="30dip" android:layout_weight="0" android:background="@drawable/minus" android:layout_height="30dip" android:id="@+id/calculatorcrunchsDownBTN"></Button>
+                <SeekBar android:layout_width="fill_parent" android:id="@+id/calculatorcrunchSeekBar" android:layout_height="wrap_content" android:layout_weight="1"></SeekBar>
+                <Button android:layout_width="30dip" android:layout_weight="0" android:background="@drawable/plus" android:layout_height="30dip" android:id="@+id/calculatorcrunchsUpBTN"></Button>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout android:layout_height="wrap_content" android:layout_weight="0" android:gravity="center" android:orientation="vertical" android:id="@+id/LinearLayout02" android:layout_width="260dip">
             <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout7">
-                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout16" android:layout_weight="1" android:layout_width="1px"></LinearLayout>
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout16" android:layout_weight="1" android:layout_width="1px" android:gravity="center">
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Fail" android:id="@+id/calculatorRunFailLBL"></TextView>
+                </LinearLayout>
                 <TextView android:layout_height="wrap_content" android:text="Run Time" android:id="@+id/TextView01" android:layout_weight="1" android:layout_width="1px" android:gravity="center"></TextView>
                 <TextView android:layout_height="wrap_content" android:text="00:00" android:layout_weight="1" android:layout_width="1px" android:id="@+id/calculatorRunLBL"></TextView>
             </LinearLayout>

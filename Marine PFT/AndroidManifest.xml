@@ -20,6 +20,8 @@
         <activity android:name="PFTActivity" android:screenOrientation="portrait" />
         <activity android:name="ComingSoonActivity" android:screenOrientation="portrait" />
         <activity android:name="InstructionsActivity" android:screenOrientation="portrait" />
+        <activity android:name="BCAActivity" android:screenOrientation="portrait" />
+        <activity android:name="CFTActivity" android:screenOrientation="portrait" />
         
 
     </application>
