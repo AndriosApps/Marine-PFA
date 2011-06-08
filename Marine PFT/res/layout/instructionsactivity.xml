@@ -35,7 +35,7 @@
 		android:id="@+id/instructionsAdView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        ads:adUnitId="a14debe274d41b2"
+        ads:adUnitId="a14deec86da5f51"
         ads:adSize="BANNER"
         android:layout_weight="0" />
     </LinearLayout>

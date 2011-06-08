@@ -21,7 +21,7 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 public class PFTActivity extends Activity {
 	
 	RadioButton maleRDO, femaleRDO;
-	CheckBox weightCheckBox, SitReachCheckBox;
+	CheckBox SitReachCheckBox;
 	SeekBar ageSeekBar, pullupSeekBar, crunchSeekBar, runSeekBar;
 	TextView ageLBL, pullupLBL, pullupTXTLBL, crunchLBL, minutesLBL, runLBL, scoreLBL;
 	TextView pullupFailLBL, crunchFailLBL, runFailLBL;
@@ -54,7 +54,7 @@ public class PFTActivity extends Activity {
 		tracker = GoogleAnalyticsTracker.getInstance();
 
 	    // Start the tracker in manual dispatch mode...
-	    tracker.start("UA-23366060-2", this);
+	    tracker.start("UA-23366060-3", this);
 	    
 		
 	}
@@ -74,7 +74,6 @@ public class PFTActivity extends Activity {
 		maleRDO  = (RadioButton) findViewById(R.id.calculatorMaleRDO); 
 		femaleRDO  = (RadioButton) findViewById(R.id.calculatorFemaleRDO);
 
-		weightCheckBox  = (CheckBox) findViewById(R.id.calculatorWeightCheckBox);
 
 		ageSeekBar = (SeekBar) findViewById(R.id.calculatorAgeSeekBar); 
 		pullupSeekBar = (SeekBar) findViewById(R.id.calculatorPullupSeekBar); 
@@ -354,14 +353,7 @@ public class PFTActivity extends Activity {
 			}
 			
 		});
-		weightCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-
-			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-				calculateScore();
-				
-			}
-			
-		});
+	
 
 		
 		
@@ -399,7 +391,7 @@ public class PFTActivity extends Activity {
 			
 			
 			
-			if(!weightCheckBox.isChecked() || totalScore == 0){
+			if(totalScore == 0){
 				if(changed()){
 					scoreLBL.setText("Fail");
 				}
@@ -634,7 +626,7 @@ public class PFTActivity extends Activity {
 	
 	public void onPause(){
 		super.onPause();
-		//tracker.dispatch();
+		tracker.dispatch();
 	}
 
 }

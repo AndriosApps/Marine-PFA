@@ -119,7 +119,7 @@ public class InstructionsActivity extends Activity {
 		tracker = GoogleAnalyticsTracker.getInstance();
 
 	    // Start the tracker in manual dispatch mode...
-	    tracker.start("UA-23366060-2", this);
+	    tracker.start("UA-23366060-3", this);
 	}
 
 	
@@ -130,7 +130,7 @@ public class InstructionsActivity extends Activity {
 	
 	public void onPause(){
 		super.onPause();
-		//tracker.dispatch();
+		tracker.dispatch();
 	}
 }
 

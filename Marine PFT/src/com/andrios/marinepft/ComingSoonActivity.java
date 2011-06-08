@@ -29,7 +29,7 @@ public class ComingSoonActivity extends Activity{
 		tracker = GoogleAnalyticsTracker.getInstance();
 
 	    // Start the tracker in manual dispatch mode...
-	    tracker.start("UA-23366060-2", this);
+	    tracker.start("UA-23366060-3", this);
 	    
 		
 	}

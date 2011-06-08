@@ -56,6 +56,6 @@ public class CFTActivity extends Activity {
 		
 		public void onPause(){
 			super.onPause();
-			//tracker.dispatch();
+			tracker.dispatch();
 		}
 }

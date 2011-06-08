@@ -40,13 +40,13 @@ public class MainActivity extends TabActivity {
         		.setContent(intent));
         
         //Setup for Workout Tab (Tab 1)
-        intent = new Intent().setClass(this, CFTActivity.class);
+        intent = new Intent().setClass(this, ComingSoonActivity.class);
         intent.putExtra("data", mData);
         mTabHost.addTab(mTabHost.newTabSpec("CFT").setIndicator("",res.getDrawable(R.drawable.cft_calc))
         		.setContent(intent));
         
         //Setup for Profile Tab (Tab 2)
-        intent = new Intent().setClass(this, BCAActivity.class);
+        intent = new Intent().setClass(this, ComingSoonActivity.class);
         intent.putExtra("data", mData);
         mTabHost.addTab(mTabHost.newTabSpec("BCA").setIndicator("",res.getDrawable(R.drawable.bca))
         		.setContent(intent));
