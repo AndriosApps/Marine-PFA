@@ -19,6 +19,11 @@ public class AndriosData implements Serializable, Cloneable {
 	
 	
 	//Male
+	
+	int[] weightMale = {131, 136, 141, 145, 150, 155,
+			160, 165, 170, 175, 180, 186, 191, 197, 202, 208, 214, 220, 225, 231, 237,
+			244, 250};
+			
 	int[] pullupMale = {3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 	
 	
@@ -29,6 +34,10 @@ public class AndriosData implements Serializable, Cloneable {
 	
 
 	//Female
+	int[] weightFemale = {119, 124, 128, 132, 136, 141, 145,
+			150, 155, 159, 164, 169, 174, 179, 184, 189, 194, 200, 205, 210, 216, 221, 227};
+	
+	
 	int[] pushupFemale17 = {19, 20, 22, 24, 60 ,36, 42, 43, 45, 47, 50, 51};
 	int[] pushupFemale20 = {16, 17, 20, 21, 28, 33, 39, 40, 43, 44, 47, 48};
 	int[] pushupFemale25 = {13, 15, 18, 19, 26, 30, 37, 39, 41, 43, 45, 46};

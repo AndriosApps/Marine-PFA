@@ -90,7 +90,7 @@ public class PFTActivity extends Activity {
 		crunchFailLBL = (TextView) findViewById(R.id.calculatorCrunchFailLBL);
 		runFailLBL = (TextView) findViewById(R.id.calculatorRunFailLBL);
 		
-		
+		 
 
 		ageUpBTN = (Button) findViewById(R.id.calculatorAgeUpBTN);
 		pushupUpBTN = (Button) findViewById(R.id.calculatorPushupsUpBTN);
