@@ -51,6 +51,7 @@ public class BCAActivity extends Activity {
 	TextView weightLBL, heightInchLBL, heightFeetLBL;
 	TextView HWLBL, bodyFatLBL;
 	AlertDialog alertdialog;
+	boolean HWchanged, maleBFchanged, femaleBFchanged;
 	
 	LinearLayout HWLL, bodyFatLL;
 	
@@ -168,6 +169,7 @@ public class BCAActivity extends Activity {
 					maleNeckLBL.setText(Double.toString(neck));
 					difference = waist - neck;
 					differenceLBL.setText(Double.toString(difference));
+					maleBFchanged = true;
 					calculateMale();
 				}
 				
@@ -183,6 +185,7 @@ public class BCAActivity extends Activity {
 					maleNeckLBL.setText(Double.toString(neck));
 					difference = waist - neck;
 					differenceLBL.setText(Double.toString(difference));
+					maleBFchanged = true;
 					calculateMale();
 				}
 				
@@ -198,6 +201,7 @@ public class BCAActivity extends Activity {
 					maleWaistLBL.setText(Double.toString(waist));
 					difference = waist - neck;
 					differenceLBL.setText(Double.toString(difference));
+					maleBFchanged = true;
 					calculateMale();
 				}
 				
@@ -213,6 +217,7 @@ public class BCAActivity extends Activity {
 					maleWaistLBL.setText(Double.toString(waist));
 					difference = waist - neck;
 					differenceLBL.setText(Double.toString(difference));
+					maleBFchanged = true;
 					calculateMale();
 				}
 				
@@ -228,6 +233,7 @@ public class BCAActivity extends Activity {
 					femaleNeckLBL.setText(Double.toString(fneck));
 					fdifference = (fwaist + fhips) - fneck;
 					femaleDifferenceLBL.setText(Double.toString(fdifference));
+					femaleBFchanged = true;
 					calculateFemale();
 				}
 				
@@ -243,6 +249,7 @@ public class BCAActivity extends Activity {
 					femaleNeckLBL.setText(Double.toString(fneck));
 					fdifference = (fwaist + fhips) - fneck;
 					femaleDifferenceLBL.setText(Double.toString(fdifference));
+					femaleBFchanged = true;
 					calculateFemale();
 				}
 				
@@ -258,6 +265,7 @@ public class BCAActivity extends Activity {
 					femaleWaistLBL.setText(Double.toString(fwaist));
 					fdifference = (fwaist + fhips) - fneck;
 					femaleDifferenceLBL.setText(Double.toString(fdifference));
+					femaleBFchanged = true;
 					calculateFemale();
 				}
 				
@@ -273,6 +281,7 @@ public class BCAActivity extends Activity {
 					femaleWaistLBL.setText(Double.toString(fwaist));
 					fdifference = (fwaist + fhips) - fneck;
 					femaleDifferenceLBL.setText(Double.toString(fdifference));
+					femaleBFchanged = true;
 					calculateFemale();
 				}
 				
@@ -288,6 +297,7 @@ public class BCAActivity extends Activity {
 					femaleHipsLBL.setText(Double.toString(fhips));
 					fdifference = (fwaist + fhips) - fneck;
 					femaleDifferenceLBL.setText(Double.toString(fdifference));
+					femaleBFchanged = true;
 					calculateFemale();
 				}
 				
@@ -303,6 +313,7 @@ public class BCAActivity extends Activity {
 					femaleHipsLBL.setText(Double.toString(fhips));
 					fdifference = (fwaist + fhips) - fneck;
 					femaleDifferenceLBL.setText(Double.toString(fdifference));
+					femaleBFchanged = true;
 					calculateFemale();
 				}
 				
@@ -312,7 +323,10 @@ public class BCAActivity extends Activity {
 
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 				flipper.showNext();
-				calcHeightWeight();
+				
+				if(HWchanged){
+					calcHeightWeight();
+				}
 				if(maleRDO.isChecked()){
 					calculateMale();
 				}else{
@@ -329,8 +343,7 @@ public class BCAActivity extends Activity {
 				height = arg1 + MIN_HEIGHT;
 				updateLBLS();
 				
-				//pushupchanged = true;
-				//calculateScore();
+				HWchanged = true;
 				calcHeightWeight();
 			}
 
@@ -348,8 +361,7 @@ public class BCAActivity extends Activity {
 			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
 				weight = arg1 + MIN_WEIGHT;
 				updateLBLS();
-				//pushupchanged = true;
-				//calculateScore();
+				HWchanged = true;
 				calcHeightWeight();
 			}
 
@@ -430,31 +442,37 @@ public class BCAActivity extends Activity {
 			percentFat = 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(69.0) + 36.76;
 			percentFat = (double) Math.round(percentFat);
 			percentFatLBL.setText(Double.toString(percentFat)+ "%");
-			if(ageGroup == 0){
-				if(percentFat > 18.0){
-					bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+			if(maleBFchanged){
+				if(ageGroup == 0){
+					if(percentFat > 18.0){
+						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+					}else{
+						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+					}
+				}else if(ageGroup == 1){
+					if(percentFat > 19.0){
+						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+					}else{
+						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+					}
+				}else if(ageGroup == 2){
+					if(percentFat > 20.0){
+						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+					}else{
+						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+					}
 				}else{
-					bodyFatLL.setBackgroundResource(R.drawable.passbtn);
-				}
-			}else if(ageGroup == 1){
-				if(percentFat > 19.0){
-					bodyFatLL.setBackgroundResource(R.drawable.failbtn);
-				}else{
-					bodyFatLL.setBackgroundResource(R.drawable.passbtn);
-				}
-			}else if(ageGroup == 2){
-				if(percentFat > 20.0){
-					bodyFatLL.setBackgroundResource(R.drawable.failbtn);
-				}else{
-					bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+					if(percentFat > 21.0){
+						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+					}else{
+						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+					}
 				}
 			}else{
-				if(percentFat > 21.0){
-					bodyFatLL.setBackgroundResource(R.drawable.failbtn);
-				}else{
-					bodyFatLL.setBackgroundResource(R.drawable.passbtn);
-				}
+				bodyFatLL.setBackgroundResource(R.drawable.grey_button);
 			}
+			
+		
 			
 	
 		}
@@ -463,31 +481,38 @@ public class BCAActivity extends Activity {
 			fpercentFat = 163.205 * Math.log10(fwaist + fhips - fneck) - 97.684 * Math.log10(69.0) - 78.387;
 			fpercentFat = (double) Math.round(fpercentFat);
 			femalePercentFatLBL.setText(Double.toString(fpercentFat)+ "%");
-			if(ageGroup == 0){
-				if(percentFat > 26.0){
-					bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+			
+			if(femaleBFchanged){
+				if(ageGroup == 0){
+					if(fpercentFat > 26.0){
+						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+					}else{
+						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+					}
+				}else if(ageGroup == 1){
+					if(fpercentFat > 27.0){
+						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+					}else{
+						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+					}
+				}else if(ageGroup == 2){
+					if(fpercentFat > 28.0){
+						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+					}else{
+						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+					}
 				}else{
-					bodyFatLL.setBackgroundResource(R.drawable.passbtn);
-				}
-			}else if(ageGroup == 1){
-				if(percentFat > 27.0){
-					bodyFatLL.setBackgroundResource(R.drawable.failbtn);
-				}else{
-					bodyFatLL.setBackgroundResource(R.drawable.passbtn);
-				}
-			}else if(ageGroup == 2){
-				if(percentFat > 28.0){
-					bodyFatLL.setBackgroundResource(R.drawable.failbtn);
-				}else{
-					bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+					if(fpercentFat > 29.0){
+						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+					}else{
+						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+					}
 				}
 			}else{
-				if(percentFat > 29.0){
-					bodyFatLL.setBackgroundResource(R.drawable.failbtn);
-				}else{
-					bodyFatLL.setBackgroundResource(R.drawable.passbtn);
-				}
+				bodyFatLL.setBackgroundResource(R.drawable.grey_button);
 			}
+			
+			
 			
 		
 		}
