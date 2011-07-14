@@ -25,6 +25,9 @@ public class CFTActivity extends Activity {
 	private static int maxAge = 65;
 	private static int minAmmoLifts = 0;
 	private static int maxAmmoLifts = 100;
+	private static int minMUFTime = 120;
+	private static int maxMUFTime = 420;
+	
 	
 	AndriosData mData;
 	AdView adView;
@@ -38,6 +41,12 @@ public class CFTActivity extends Activity {
 	//MTC
 	SeekBar mtcSeekBar;
 	Button mtcUpBTN, mtcDownBTN;
+	TextView mtcScoreLBL, mtcTimeLBL;
+	
+	//MUF
+	SeekBar mufSeekBar;
+	Button mufUpBTN, mufDownBTN;
+	TextView mufScoreLBL, mufTimeLBL;
 	
 	
 	
@@ -51,8 +60,8 @@ public class CFTActivity extends Activity {
 	SeekBar ammoSeekBar;
 	Button ammoUpBTN, ammoDownBTN;
 	
-	TextView mtcScoreLBL, mtcTimeLBL;
 	TextView ageLBL;
+	TextView totalScoreLBL;
 	RadioButton maleRDO;
 	 @Override
 	    public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +113,16 @@ public class CFTActivity extends Activity {
 		ammoNumLBL = (TextView) findViewById(R.id.cftActivityAmmoCanLiftsNumLBL);
 		ammoNumLBL.setText(Integer.toString(ammoLifts));
 		
+		// MUF
+		mufSeekBar = (SeekBar) findViewById(R.id.cftActivityManueverUnderFireSeekBar);
+		mufSeekBar.setMax(maxMUFTime - minMUFTime);
+		mufUpBTN = (Button) findViewById(R.id.cftActivityManueverUnderFireUpBTN);
+		mufDownBTN = (Button) findViewById(R.id.cftActivityManueverUnderFireDownBTN);
+		mufScoreLBL = (TextView) findViewById(R.id.cftActivityManueverUnderFireScoreLBL);
+		mufTimeLBL = (TextView) findViewById(R.id.cftActivityManueverUnderFireLBL);
+		mufTimeLBL.setText(formatTimer(mufTime));
+		
+		totalScoreLBL = (TextView) findViewById(R.id.cftActivityTotalScoreLBL);
 	}
 
 		private void setOnClickListeners() {
@@ -269,6 +288,58 @@ public class CFTActivity extends Activity {
 					}
 					
 				});
+				
+				//MUF
+				 mufSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+
+					public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+						mufChanged = true;
+						mufTime = arg1 + minMUFTime;
+						mufTimeLBL.setText(formatTimer(mufTime));
+						
+						calcScore();
+					}
+
+					public void onStartTrackingTouch(SeekBar arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					public void onStopTrackingTouch(SeekBar arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					 
+				 });
+				 
+					mufUpBTN.setOnClickListener(new OnClickListener(){
+
+						public void onClick(View arg0) {
+							mufTime++;
+							if(mufTime > maxMUFTime){
+								mufTime = maxMUFTime;
+							}
+							mufSeekBar.setProgress(mufTime - minMUFTime);
+							
+							
+						}
+						
+					});
+					
+					mufDownBTN.setOnClickListener(new OnClickListener(){
+
+						public void onClick(View arg0) {
+							mufTime--;
+							if(mufTime < minMUFTime){
+								mufTime = minMUFTime;
+							}
+							mufSeekBar.setProgress(mufTime - minMUFTime);
+							
+							
+							
+						}
+						
+					});
 		
 	}
 		
@@ -278,21 +349,42 @@ public class CFTActivity extends Activity {
 			}else{
 				calcFemale();
 			}
+			
+			if(mtcChanged && ammoLiftChanged && mufChanged){
+				int totalScore = (mtcScore + ammoLiftScore + mufScore);
+				if(mtcFail || ammoLiftFail || mufFail){
+					totalScoreLBL.setText("Failed Event(s)");
+				}else if(totalScore >= 270){
+					totalScoreLBL.setText("1st Class: "+ totalScore);
+				}else if(totalScore >= 225){
+					totalScoreLBL.setText("2nd Class: "+ totalScore);
+				}else if(totalScore >= 190){
+					totalScoreLBL.setText("3rd Class: "+ totalScore);
+				}else{
+					totalScoreLBL.setText("Fail: "+ totalScore);
+				}
+			}
 		}
+		
+		
 		private void calcMale(){
 			
 			if(age <= 26){
 				calcMTC(mData.maleMTCMins[0], mData.maleMTC17);
 				calcAmmoLift(mData.maleAMMOMax[0], mData.maleAMMO17);
+				calcMUF(mData.maleMUFMins[0], mData.maleMUF17);
 			}else if(age <= 39){
 				calcMTC(mData.maleMTCMins[1], mData.maleMTC27);
 				calcAmmoLift(mData.maleAMMOMax[1], mData.maleAMMO27);
+				calcMUF(mData.maleMUFMins[1], mData.maleMUF27);
 			}else if(age <= 46){
 				calcMTC(mData.maleMTCMins[2], mData.maleMTC40);
 				calcAmmoLift(mData.maleAMMOMax[2], mData.maleAMMO40);
+				calcMUF(mData.maleMUFMins[2], mData.maleMUF40);
 			}else{
 				calcMTC(mData.maleMTCMins[3], mData.maleMTC46);
 				calcAmmoLift(mData.maleAMMOMax[3], mData.maleAMMO46);
+				calcMUF(mData.maleMUFMins[3], mData.maleMUF46);
 			}
 		}
 		
@@ -300,21 +392,24 @@ public class CFTActivity extends Activity {
 			if(age <= 26){
 				calcMTC(mData.femaleMTCMins[0], mData.femaleMTC17);
 				calcAmmoLift(mData.femaleAMMOMax[0], mData.femaleAMMO17);
+				calcMUF(mData.femaleMUFMins[0], mData.femaleMUF17);
 			}else if(age <= 39){
 				calcMTC(mData.femaleMTCMins[1], mData.femaleMTC27);
 				calcAmmoLift(mData.femaleAMMOMax[1], mData.femaleAMMO27);
-			}else if(age <= 46){
+				calcMUF(mData.femaleMUFMins[1], mData.femaleMUF27);
+			}else if(age <= 45){
 				calcMTC(mData.femaleMTCMins[2], mData.femaleMTC40);
 				calcAmmoLift(mData.femaleAMMOMax[2], mData.femaleAMMO40);
+				calcMUF(mData.femaleMUFMins[2], mData.femaleMUF40);
 			}else{
 				calcMTC(mData.femaleMTCMins[3], mData.femaleMTC46);
 				calcAmmoLift(mData.femaleAMMOMax[3], mData.femaleAMMO46);
+				calcMUF(mData.femaleMUFMins[3], mData.femaleMUF46);
 			}
 		}
 		
 		private void calcMTC(int min, int[] MTC){
 			if(mtcTime <= min){
-		
 				mtcScore = 100;
 				mtcFail = false;
 			}else if((mtcTime - min) > MTC.length){
@@ -328,6 +423,7 @@ public class CFTActivity extends Activity {
 				
 			}else if(mtcFail){
 				mtcScoreLBL.setText("Fail");
+				
 			}else{
 				mtcScoreLBL.setText(Integer.toString(mtcScore));
 			}
@@ -351,6 +447,27 @@ public class CFTActivity extends Activity {
 				ammoScoreLBL.setText("Fail");
 			}else{
 				ammoScoreLBL.setText(Integer.toString(ammoLiftScore));
+			}
+		}
+		
+		private void calcMUF(int min, int[] MUF){
+			if(mufTime <= min){
+		
+				mufScore = 100;
+				mufFail = false;
+			}else if((mufTime - min) > MUF.length){
+				mufFail = true;
+			}else{
+				mufScore = MUF[MUF.length - (mufTime - min)];
+				mufFail = false;
+			}
+			
+			if(!mufChanged){
+				
+			}else if(mufFail){
+				mufScoreLBL.setText("Fail");
+			}else{
+				mufScoreLBL.setText(Integer.toString(mufScore));
 			}
 		}
 
