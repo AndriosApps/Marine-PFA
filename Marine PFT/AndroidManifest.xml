@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.andrios.marinepft"
-      android:versionCode="5"
-      android:versionName="1.2">
+      android:versionCode="6"
+      android:versionName="1.2.1">
     <uses-sdk android:minSdkVersion="3" />
     <uses-permission android:name="android.permission.INTERNET"/>
   	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
       
     <application android:icon="@drawable/marine_corps_2" android:label="@string/app_name">
         <activity android:name=".MainActivity"
-                  android:label="@string/app_name">
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait" 
+                  android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -17,10 +19,10 @@
         </activity>
         <activity android:name="com.google.ads.AdActivity"
               android:configChanges="keyboard|keyboardHidden|orientation"/>
-        <activity android:name="PFTActivity" android:screenOrientation="portrait" />
-       <activity android:name="InstructionsActivity" android:screenOrientation="portrait" />
-        <activity android:name="BCAActivity" android:screenOrientation="portrait" />
-        <activity android:name="CFTActivity" android:screenOrientation="portrait" />
+        <activity android:name="PFTActivity" />
+       <activity android:name="InstructionsActivity" />
+        <activity android:name="BCAActivity" />
+        <activity android:name="CFTActivity" />
         
 
     </application>

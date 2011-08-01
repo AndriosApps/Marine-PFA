@@ -4,6 +4,7 @@ package com.andrios.marinepft;
 import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
@@ -60,5 +61,11 @@ public class MainActivity extends TabActivity {
 
         //Set Tab host to Home Tab
         mTabHost.setCurrentTab(0);
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	  // ignore orientation/keyboard change
+	  super.onConfigurationChanged(newConfig);
 	}
 }
