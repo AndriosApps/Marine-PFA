@@ -532,56 +532,27 @@ public class PFTActivity extends Activity {
 		}
 	}
 	
-	private void scorePullups(){
-		if(maleRDO.isChecked()){
-			if(pullups >= 20){
+	private void scorePullups() {
+		if(maleRDO.isChecked()) {
+			if (pullups >= 20){
 				pullupScore = 100;
-			}else if(pullups >= 19){
-				pullupScore = 95;
-			}else if(pullups >= 18){
-				pullupScore = 90;
-			}else if(pullups >= 17){
-				pullupScore = 85;
-			}else if(pullups >= 16){
-				pullupScore = 80;
-			}else if(pullups >= 15){
-				pullupScore = 75;
-			}else if(pullups >= 14){
-				pullupScore = 70;
-			}else if(pullups >= 13){
-				pullupScore = 65;
-			}else if(pullups >= 12){
-				pullupScore = 60;
-			}else if(pullups >= 11){
-				pullupScore = 55;
-			}else if(pullups >= 10){
-				pullupScore = 50;
-			}else if(pullups >= 9){
-				pullupScore = 45;
-			}else if(pullups >= 8){
-				pullupScore = 40;
-			}else if(pullups >= 7){
-				pullupScore = 35;
-			}else if(pullups >= 6){
-				pullupScore = 30;
-			}else if(pullups >= 5){
-				pullupScore = 25;
-			}else if(pullups >= 4){
-				pullupScore = 20;
-			}else if(pullups >= 3){
-				pullupScore = 15;
-			}else{
+			} else if (pullups >= 3){
+				pullupScore = pullups*5;
+			} else {
 				pullupScore = 0;
 			}
-		}else{
-			int num = 70 - pullups;
-			if(num <= 0){
+		} else {
+			if (pullups >= 70) {
 				pullupScore = 100;
-			}else if(num > 55){
+			} else if (pullups > 40) {
+				int num = pullups - 40;
+				pullupScore = 40+(2*num);
+			} else if (pullups >= 15) {
+				pullupScore = pullups;
+			} else {
 				pullupScore = 0;
-			}else{
-				pullupScore = 2*(70 - num);
 			}
+			
 		}
 		if(pullupScore > 0){
 			pullupFailLBL.setText(Integer.toString(pullupScore));
@@ -589,10 +560,6 @@ public class PFTActivity extends Activity {
 			pullupFailLBL.setText("Fail");
 		}
 	}
-	
-	
-
-
 
 	private void scoreCrunches(){
 		if(crunches >= 50){
