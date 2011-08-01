@@ -457,30 +457,36 @@ public class PFTActivity extends Activity {
 		System.out.println("Seconds: " + runtime);
 		
 		if(maleRDO.isChecked()){
+			runScore = 10 + (1980-runtime)/(int)10;
+			if (runScore>100)
+				runScore = 100;
 			
-				int time = 1980;
-				runScore = 9;
-				while(runtime <= time ){
-					time =  time - 10;
-					runScore++;
-					if(runScore >= 100){
-						runScore = 100;
-						break;
-					}
-				}
+//				int time = 1980;
+//				runScore = 9;
+//				while(runtime <= time ){
+//					time =  time - 10;
+//					runScore++;
+//					if(runScore >= 100){
+//						runScore = 100;
+//						break;
+//					}
+//				}
 			
 		}else{
+			runScore = 10 + (2160-runtime)/(int)10;
+			if (runScore>100)
+				runScore = 100;
 			
-				int time = 2160;
-				runScore = 9;
-				while(runtime <= time ){
-					time =  time - 10;
-					runScore++;
-					if(runScore >= 100){
-						runScore = 100;
-						break;
-					}
-				}
+//				int time = 2160;
+//				runScore = 9;
+//				while(runtime <= time ){
+//					time =  time - 10;
+//					runScore++;
+//					if(runScore >= 100){
+//						runScore = 100;
+//						break;
+//					}
+//				}
 			
 		}
 		scoreMinRun();
