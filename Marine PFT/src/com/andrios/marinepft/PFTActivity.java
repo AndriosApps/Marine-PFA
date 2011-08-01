@@ -107,8 +107,10 @@ public class PFTActivity extends Activity {
 		
 		pullupSeekBar.setMax(25);//max pullups is 20 FAH 70 sec
 		crunchSeekBar.setMax(100);//max crunchs is 100 male / female
-		runSeekBar.setMax(2100);//max runtime 29:10 (female) 35 min * 60 = 2100
-		
+		runSeekBar.setMax(2400);//max runtime 29:10 (female) 35 min * 60 = 2100
+								// The actual max runtime for females is 36:00 changed 
+								//      max value to 40*60 = 2400.
+			
 		adView = (AdView)this.findViewById(R.id.homeAdView);
 	      
 	    request = new AdRequest();
