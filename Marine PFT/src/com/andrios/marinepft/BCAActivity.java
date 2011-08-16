@@ -346,6 +346,7 @@ public class BCAActivity extends Activity {
 				
 				HWchanged = true;
 				calcHeightWeight();
+				calcBodyFat();
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -364,6 +365,7 @@ public class BCAActivity extends Activity {
 				updateLBLS();
 				HWchanged = true;
 				calcHeightWeight();
+				calcBodyFat();
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -437,10 +439,16 @@ public class BCAActivity extends Activity {
 		});
 		
 	}
-		
+		private void calcBodyFat(){
+			if(maleRDO.isChecked() && maleBFchanged){
+				calculateMale();
+			}else if(!maleRDO.isChecked() && femaleBFchanged){
+				calculateFemale();
+			}
+		}
 		private void calculateMale(){
 			//Equation derived from DoD Instruction 1308.3 Page 13
-			percentFat = 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(69.0) + 36.76;
+			percentFat = 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(height) + 36.76;
 			percentFat = (double) Math.round(percentFat);
 			percentFatLBL.setText(Double.toString(percentFat)+ "%");
 			if(maleBFchanged){
@@ -479,7 +487,7 @@ public class BCAActivity extends Activity {
 		}
 		
 		private void calculateFemale(){
-			fpercentFat = 163.205 * Math.log10(fwaist + fhips - fneck) - 97.684 * Math.log10(69.0) - 78.387;
+			fpercentFat = 163.205 * Math.log10(fwaist + fhips - fneck) - 97.684 * Math.log10(height) - 78.387;
 			fpercentFat = (double) Math.round(fpercentFat);
 			femalePercentFatLBL.setText(Double.toString(fpercentFat)+ "%");
 			
