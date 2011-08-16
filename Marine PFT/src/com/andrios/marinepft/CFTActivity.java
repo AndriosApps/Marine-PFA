@@ -6,6 +6,7 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,8 +22,6 @@ public class CFTActivity extends Activity {
 
 	private static int minMTCTime = 120;
 	private static int maxMTCTime = 360;
-	private static int minAge = 17;
-	private static int maxAge = 65;
 	private static int minAmmoLifts = 0;
 	private static int maxAmmoLifts = 100;
 	private static int minMUFTime = 120;
@@ -34,9 +33,6 @@ public class CFTActivity extends Activity {
 	AdRequest request;
 	GoogleAnalyticsTracker tracker;
 	
-	//Age
-	SeekBar  ageSeekBar;
-	Button ageUpBTN, ageDownBTN;
 	
 	//MTC
 	SeekBar mtcSeekBar;
@@ -54,6 +50,7 @@ public class CFTActivity extends Activity {
 	int mtcScore, ammoLiftScore, mufScore;
 	boolean mtcFail, ammoLiftFail, mufFail;
 	boolean mtcChanged, ammoLiftChanged, mufChanged;
+	boolean male = true;
 	
 	//Ammo Lift
 	TextView ammoScoreLBL, ammoNumLBL;
@@ -62,7 +59,7 @@ public class CFTActivity extends Activity {
 	
 	TextView ageLBL;
 	TextView totalScoreLBL;
-	RadioButton maleRDO;
+	SegmentedControlButton maleSegment, femaleSegment, age17Segment, age27Segment, age40Segment, age46Segment;
 	 @Override
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
@@ -83,9 +80,16 @@ public class CFTActivity extends Activity {
 
 		private void setConnections() {
 		
-		//RDO Buttons
-		maleRDO = (RadioButton) findViewById(R.id.cftActivityMaleRDO);
+		//Segment Buttons
+		maleSegment = (SegmentedControlButton) findViewById(R.id.cftActivityMaleSegment);
+		femaleSegment = (SegmentedControlButton) findViewById(R.id.cftActivityFemaleSegment);
+		age17Segment = (SegmentedControlButton) findViewById(R.id.cftActivityAge17Segment);
+		age27Segment = (SegmentedControlButton) findViewById(R.id.cftActivityAge27Segment);
+		age40Segment = (SegmentedControlButton) findViewById(R.id.cftActivityAge40Segment);
+		age46Segment = (SegmentedControlButton) findViewById(R.id.cftActivityAge46Segment);
 			
+		
+		
 		// MTC
 		mtcSeekBar = (SeekBar) findViewById(R.id.cftActivityMoveToContactSeekBar);
 		mtcSeekBar.setMax(maxMTCTime - minMTCTime);
@@ -96,12 +100,7 @@ public class CFTActivity extends Activity {
 		mtcTimeLBL = (TextView) findViewById(R.id.cftActivityMoveToContactLBL);
 		mtcTimeLBL.setText(formatTimer(mtcTime));
 		
-		// Age Interface
-		ageLBL = (TextView) findViewById(R.id.cftActivityAgeLBL);
-		ageSeekBar = (SeekBar) findViewById(R.id.cftActivityAgeSeekBar);
-		ageSeekBar.setMax(maxAge - minAge);
-		ageUpBTN = (Button) findViewById(R.id.cftActivityAgeUpBTN);
-		ageDownBTN = (Button) findViewById(R.id.cftActivityAgeDownBTN);
+	
 		
 		//Ammo Lift Interface
 		ammoSeekBar = (SeekBar) findViewById(R.id.cftActivityAmmoCanLiftsSeekBar);
@@ -123,68 +122,87 @@ public class CFTActivity extends Activity {
 		mufTimeLBL.setText(formatTimer(mufTime));
 		
 		totalScoreLBL = (TextView) findViewById(R.id.cftActivityTotalScoreLBL);
+		
+		adView = (AdView)this.findViewById(R.id.CFTAdView);
+	      
+	    request = new AdRequest();
+		request.setTesting(false);
+		adView.loadAd(request);
 	}
 
 		private void setOnClickListeners() {
-			maleRDO.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+			maleSegment.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-					
+					if(arg1){
+
+						male = true;
+					}else{
+						male = false;
+					}
 					calcScore();
 				}
 				
 			});
+			
+		
 		
 			// AGE
-			ageSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+			
+			age17Segment.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
-					public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-						
-						age = arg1 + minAge;
-						ageLBL.setText(Integer.toString(age));
+				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+					if(arg1){
+						System.out.println("17 Changed");
+						age = 17;
 						calcScore();
-						
 					}
-
-					public void onStartTrackingTouch(SeekBar arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					public void onStopTrackingTouch(SeekBar arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					 
-				 });
-			
-			ageUpBTN.setOnClickListener(new OnClickListener(){
-
-				public void onClick(View arg0) {
-					age++;
-					if(age > maxAge){
-						age = maxAge;
-					}
-					ageSeekBar.setProgress(age - minAge);
 					
 					
 				}
 				
 			});
 			
-			ageDownBTN.setOnClickListener(new OnClickListener(){
+			age27Segment.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
-				public void onClick(View arg0) {
-					age--;
-					if(age < minAge){
-						age = minAge;
+				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+					if(arg1){
+						System.out.println("27 Changed");
+						age = 27;
+						calcScore();
 					}
-					ageSeekBar.setProgress(age - minAge);
-					
 					
 				}
 				
 			});
+			
+			age40Segment.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+					if(arg1){
+						System.out.println("40 Changed");
+						age = 40;
+						calcScore();
+					}
+					
+				}
+				
+			});
+			
+			age46Segment.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+					if(arg1){
+						System.out.println("46 Changed");
+						age = 46;
+						calcScore();
+					}
+					
+				}
+				
+			});
+			
+			
 			//MTC
 		 mtcSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 
@@ -344,7 +362,9 @@ public class CFTActivity extends Activity {
 	}
 		
 		private void calcScore(){
-			if(maleRDO.isChecked()){
+			System.out.println("Age: "+ age);
+			System.out.println("isMale: " + male);
+			if(male){
 				calcMale();
 			}else{
 				calcFemale();
@@ -352,17 +372,25 @@ public class CFTActivity extends Activity {
 			
 			if(mtcChanged && ammoLiftChanged && mufChanged){
 				int totalScore = (mtcScore + ammoLiftScore + mufScore);
+				totalScoreLBL.setTextColor(Color.BLACK);
 				if(mtcFail || ammoLiftFail || mufFail){
 					totalScoreLBL.setText("Failed Event(s)");
+					totalScoreLBL.setBackgroundColor(Color.RED);
 				}else if(totalScore >= 270){
 					totalScoreLBL.setText("1st Class: "+ totalScore);
+					totalScoreLBL.setBackgroundColor(Color.GREEN);
 				}else if(totalScore >= 225){
 					totalScoreLBL.setText("2nd Class: "+ totalScore);
+					totalScoreLBL.setBackgroundColor(Color.GREEN);
 				}else if(totalScore >= 190){
 					totalScoreLBL.setText("3rd Class: "+ totalScore);
+					totalScoreLBL.setBackgroundColor(Color.GREEN);
 				}else{
 					totalScoreLBL.setText("Fail: "+ totalScore);
+					totalScoreLBL.setBackgroundColor(Color.RED);
 				}
+
+				totalScoreLBL.getBackground().setAlpha(100);
 			}
 		}
 		
@@ -377,7 +405,7 @@ public class CFTActivity extends Activity {
 				calcMTC(mData.maleMTCMins[1], mData.maleMTC27);
 				calcAmmoLift(mData.maleAMMOMax[1], mData.maleAMMO27);
 				calcMUF(mData.maleMUFMins[1], mData.maleMUF27);
-			}else if(age <= 46){
+			}else if(age <= 45){
 				calcMTC(mData.maleMTCMins[2], mData.maleMTC40);
 				calcAmmoLift(mData.maleAMMOMax[2], mData.maleAMMO40);
 				calcMUF(mData.maleMUFMins[2], mData.maleMUF40);

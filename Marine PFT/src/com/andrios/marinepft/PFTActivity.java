@@ -70,6 +70,7 @@ public class PFTActivity extends Activity {
 
 	private void setConnections() {
 
+		
 
 		maleRDO  = (RadioButton) findViewById(R.id.calculatorMaleRDO); 
 		femaleRDO  = (RadioButton) findViewById(R.id.calculatorFemaleRDO);
@@ -405,7 +406,7 @@ public class PFTActivity extends Activity {
 					}else if(totalScore >= 175){
 						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 135){
-						scoreLBL.setText("3d Class: " + Integer.toString(totalScore));
+						scoreLBL.setText("3rd Class: " + Integer.toString(totalScore));
 					}else{
 						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
 					}
@@ -416,7 +417,7 @@ public class PFTActivity extends Activity {
 					}else if(totalScore >= 150){
 						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 110){
-						scoreLBL.setText("3d Class: " + Integer.toString(totalScore));
+						scoreLBL.setText("3rd Class: " + Integer.toString(totalScore));
 					}else{
 						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
 					}
@@ -427,7 +428,7 @@ public class PFTActivity extends Activity {
 					}else if(totalScore >= 125){
 						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 88){
-						scoreLBL.setText("3d Class: " + Integer.toString(totalScore));
+						scoreLBL.setText("3rd Class: " + Integer.toString(totalScore));
 					}else{
 						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
 					}
@@ -438,7 +439,7 @@ public class PFTActivity extends Activity {
 					}else if(totalScore >= 100){
 						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 65){
-						scoreLBL.setText("3d Class: " + Integer.toString(totalScore));
+						scoreLBL.setText("3rd Class: " + Integer.toString(totalScore));
 					}else{
 						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
 					}
