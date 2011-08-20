@@ -12,7 +12,7 @@
         <LinearLayout android:layout_width="fill_parent" android:gravity="center" android:id="@+id/linearLayout3" android:layout_height="wrap_content" android:orientation="vertical">
             <LinearLayout android:layout_width="260dip" android:gravity="center" android:id="@+id/linearLayout5" android:layout_weight="1" android:layout_height="fill_parent" android:orientation="vertical">
                 <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout11" android:layout_height="wrap_content">
-                    <TextView android:layout_width="1px" android:text="TextView" android:gravity="center" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/cftActivityMoveToContactScoreLBL"></TextView>
+                    <TextView android:layout_width="1px" android:text="" android:gravity="center" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/cftActivityMoveToContactScoreLBL"></TextView>
                     <TextView android:layout_width="1px" android:gravity="center" android:text="Move to Contact" android:layout_weight="1" android:layout_height="wrap_content" android:id="@+id/cftActivityMoveToContactTXTLBL"></TextView>
                     <TextView android:layout_width="1px" android:gravity="center_vertical" android:text="00:00" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/cftActivityMoveToContactLBL"></TextView>
                 </LinearLayout>
@@ -25,7 +25,7 @@
             <LinearLayout android:layout_width="260dip" android:gravity="center" android:id="@+id/linearLayout6" android:layout_weight="1" android:layout_height="fill_parent" android:orientation="vertical">
                 <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout8" android:layout_height="wrap_content">
                     <LinearLayout android:layout_width="1px" android:gravity="center" android:id="@+id/linearLayout15" android:layout_weight="1" android:layout_height="fill_parent">
-                        <TextView android:layout_width="wrap_content" android:text="TextView" android:gravity="center" android:layout_height="fill_parent" android:id="@+id/cftActivityAmmoCanLiftsScoreLBL"></TextView>
+                        <TextView android:layout_width="wrap_content" android:text="" android:gravity="center" android:layout_height="fill_parent" android:id="@+id/cftActivityAmmoCanLiftsScoreLBL"></TextView>
                     </LinearLayout>
                     <TextView android:layout_width="1px" android:gravity="center" android:text="Ammo Can Lifts" android:layout_weight="1" android:layout_height="wrap_content" android:id="@+id/textView7"></TextView>
                     <TextView android:layout_width="1px" android:gravity="center_vertical" android:text="0" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/cftActivityAmmoCanLiftsNumLBL"></TextView>
@@ -39,7 +39,7 @@
             <LinearLayout android:layout_width="260dip" android:gravity="center" android:id="@+id/LinearLayout02" android:layout_weight="0" android:layout_height="wrap_content" android:orientation="vertical">
                 <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout7" android:layout_height="wrap_content">
                     <LinearLayout android:layout_width="1px" android:gravity="center" android:id="@+id/linearLayout16" android:layout_weight="1" android:layout_height="fill_parent">
-                        <TextView android:layout_width="wrap_content" android:text="TextView" android:gravity="center" android:layout_height="fill_parent" android:id="@+id/cftActivityManueverUnderFireScoreLBL"></TextView>
+                        <TextView android:layout_width="wrap_content" android:text="" android:gravity="center" android:layout_height="fill_parent" android:id="@+id/cftActivityManueverUnderFireScoreLBL"></TextView>
                     </LinearLayout>
                     <TextView android:layout_width="1px" android:gravity="center" android:text="Manuever Under Fire" android:layout_weight="1" android:layout_height="wrap_content" android:id="@+id/TextView01"></TextView>
                     <TextView android:layout_width="1px" android:gravity="center_vertical" android:text="00:00" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/cftActivityManueverUnderFireLBL"></TextView>

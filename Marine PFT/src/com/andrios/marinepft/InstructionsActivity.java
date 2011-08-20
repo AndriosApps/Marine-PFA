@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.ads.AdRequest;
@@ -15,7 +16,8 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class InstructionsActivity extends Activity {
 
-	TextView opnavLBL, navadmin1LBL, navadmin2LBL, navadmin3LBL, npcLBL;
+	
+	LinearLayout MCOLL, BCALL, TecomCftLL;
 	AdView adView;
 	AdRequest request;
 	GoogleAnalyticsTracker tracker;
@@ -33,19 +35,17 @@ public class InstructionsActivity extends Activity {
     
 
 	private void setConnections() {
+		TecomCftLL = (LinearLayout) findViewById(R.id.TecomCFTLinearLayout);
 		rateBTN = (Button) findViewById(R.id.instructionActivityRateBTN);
-		opnavLBL = (TextView) findViewById(R.id.instructionActivityOPNAVLBL);
-		navadmin1LBL = (TextView) findViewById(R.id.instructionActivityNAVADMIN1LBL);
-		navadmin2LBL = (TextView) findViewById(R.id.instructionActivityNAVADMIN2LBL);
-		navadmin3LBL = (TextView) findViewById(R.id.instructionActivityNAVADMIN3LBL);
-		npcLBL = (TextView) findViewById(R.id.instructionActivityNPCLBL);
+		MCOLL = (LinearLayout) findViewById(R.id.MCOLinearLayout);
+		BCALL = (LinearLayout) findViewById(R.id.BCALinearLayout);
+		
 		
 		adView = (AdView)this.findViewById(R.id.instructionsAdView);
 	      
 	    request = new AdRequest();
 		request.setTesting(false);
-		adView.loadAd(request);
-		
+		adView.loadAd(request);	
 	}
 
 	private void setOnClickListeners() {
@@ -60,71 +60,47 @@ public class InstructionsActivity extends Activity {
 			}
 			
 		});
-		opnavLBL.setOnClickListener(new OnClickListener(){
+		MCOLL.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
 				 tracker.trackEvent(
 				            "Clicks",  // Category
 				            "Link",  // Action
-				            "6100.13", // Label
+				            "MCO 6100.13", // Label
 				            0);       // Value
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://usmc.mil/news/publications/Documents/MCO%206100.13.pdf"));
+				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.marines.mil/news/publications/Documents/MCO%206100.13%20W_CH%201.pdf"));
 				startActivity(browserIntent);
 			}
 			
 		});
-		navadmin1LBL.setOnClickListener(new OnClickListener(){
+		
+		BCALL.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
 				 tracker.trackEvent(
 				            "Clicks",  // Category
 				            "Link",  // Action
-				            "NAVADMIN 180-05", // Label
+				            "MCO 6110.3", // Label
 				            0);       // Value
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.navy-prt.com/navadmin180-05.html"));
-				//startActivity(browserIntent);
+				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.marines.mil/news/publications/Documents/MCO%206110.3%20W%20CH%201.pdf"));
+				startActivity(browserIntent);
 			}
 			
 		});
-		navadmin2LBL.setOnClickListener(new OnClickListener(){
+		TecomCftLL.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
 				 tracker.trackEvent(
 				            "Clicks",  // Category
 				            "Link",  // Action
-				            "NAVADMIN 293-06", // Label
+				            "TECOM - CFL", // Label
 				            0);       // Value
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.navy-prt.com/navadmin293-06.html"));
-				//startActivity(browserIntent);
+				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.tecom.usmc.mil/CFT/CFT.HTM"));
+				startActivity(browserIntent);
 			}
 			
 		});
-		navadmin3LBL.setOnClickListener(new OnClickListener(){
-
-			public void onClick(View v) {
-				 tracker.trackEvent(
-				            "Clicks",  // Category
-				            "Link",  // Action
-				            "NAVADMIN 011-07", // Label
-				            0);       // Value
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.navy-prt.com/navadmin011-07.html"));
-				//startActivity(browserIntent);
-			}
-			
-		});
-		npcLBL.setOnClickListener(new OnClickListener(){
-
-			public void onClick(View v) {
-				 tracker.trackEvent(
-				            "Clicks",  // Category
-				            "Link",  // Action
-				            "NPC.navy.mil", // Label
-				            0);       // Value
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.npc.navy.mil/"));
-				//startActivity(browserIntent);
-			}
-			
-		});
+	
 
 		
 	}

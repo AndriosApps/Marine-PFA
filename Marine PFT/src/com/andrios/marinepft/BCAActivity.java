@@ -16,11 +16,15 @@ import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import java.lang.Math;
@@ -37,23 +41,23 @@ public class BCAActivity extends Activity {
 	AdRequest request;
 	GoogleAnalyticsTracker tracker;
 	ViewFlipper flipper;//Used to Show animation between Back / Front of card. 
-	RadioButton maleRDO;
+	SegmentedControlButton maleRDO;
 	Button maleNeckPlusBTN, maleNeckMinusBTN, femaleNeckPlusBTN, femaleNeckMinusBTN;
 	Button maleWaistPlusBTN, maleWaistMinusBTN, femaleWaistPlusBTN, femaleWaistMinusBTN;
 	Button femaleHipsPlusBTN, femaleHipsMinusBTN;
 	Double neck = 10.0, waist= 30.0, difference = 20.0, percentFat = 0.0;
 	Double fneck = 15.0, fwaist= 30.0, fhips = 35.0, fdifference = 50.0, fpercentFat = 0.0;
-	
+	Spinner ageSpinner;
 	SeekBar heightSeekBar, weightSeekBar;
 	Button heightUpBTN, heightDownBTN, weightUpBTN, weightDownBTN;
-	int height = 69, weight = 100, ageGroup=-1;
+	int height = 69, weight = 100, ageGroup= 0;
 	TextView maleNeckLBL, maleWaistLBL, femaleNeckLBL, femaleWaistLBL, femaleHipsLBL;
 	TextView differenceLBL, percentFatLBL, femaleDifferenceLBL, femalePercentFatLBL;
 	TextView weightLBL, heightInchLBL, heightFeetLBL;
 	TextView HWLBL, bodyFatLBL;
-	AlertDialog alertdialog;
-	boolean HWchanged, maleBFchanged, femaleBFchanged;
 	
+	boolean HWchanged, maleBFchanged, femaleBFchanged;
+	private String array_spinner[];
 	LinearLayout HWLL, bodyFatLL;
 	
 	  @Override
@@ -71,8 +75,6 @@ public class BCAActivity extends Activity {
 		public void onStart() {
 			super.onStart();
 			
-			setAlertDialog();
-			alertdialog.show();
 		}
 	
 		private void getExtras() {
@@ -83,10 +85,20 @@ public class BCAActivity extends Activity {
 		}
 
 		private void setConnections() {
+			array_spinner=new String[4];
+			array_spinner[0]="17-20";
+			array_spinner[1]="21-27";
+			array_spinner[2]="28-39";
+			array_spinner[3]="40+";
+			ageSpinner = (Spinner) findViewById(R.id.bcaActivityAgeSpinner);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					R.layout.my_spinner_item, array_spinner);
+			ageSpinner.setAdapter(adapter);
+			
 			flipper = (ViewFlipper) findViewById(R.id.details); 
 			flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_in));
 		    flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_out));  
-			maleRDO = (RadioButton) findViewById(R.id.bcaActivityrMaleRDO);
+			maleRDO = (SegmentedControlButton) findViewById(R.id.bcaActivityrMaleRDO);
 		
 			maleNeckPlusBTN = (Button) findViewById(R.id.bcaActivityMaleNeckPlusBTN);
 			maleNeckMinusBTN = (Button) findViewById(R.id.bcaActivityMaleNeckMinusBTN);
@@ -159,6 +171,37 @@ public class BCAActivity extends Activity {
 		}
 
 		private void setOnClickListeners() {
+			
+			 ageSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+					public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+							long arg3) {
+						int posit = ageSpinner.getSelectedItemPosition();
+						if(posit == 0){
+							ageGroup = 0;
+						}else if(posit == 1){
+							ageGroup = 1;
+						}else if(posit == 2){
+							ageGroup = 2;
+						}else if(posit == 3){
+							ageGroup = 3;
+						}
+						if(HWchanged){
+							calcHeightWeight();
+						}
+						
+						calcHeightWeight();
+						calcBodyFat();
+						
+						
+						
+					}
+
+					public void onNothingSelected(AdapterView<?> arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+			 });
 			
 			maleNeckPlusBTN.setOnClickListener(new OnClickListener(){
 
@@ -328,11 +371,8 @@ public class BCAActivity extends Activity {
 				if(HWchanged){
 					calcHeightWeight();
 				}
-				if(maleRDO.isChecked()){
-					calculateMale();
-				}else{
-					calculateFemale();
-				}
+				calcHeightWeight();
+				calcBodyFat();
 				
 			}
 			
@@ -365,7 +405,7 @@ public class BCAActivity extends Activity {
 				updateLBLS();
 				HWchanged = true;
 				calcHeightWeight();
-				calcBodyFat();
+				
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -444,6 +484,8 @@ public class BCAActivity extends Activity {
 				calculateMale();
 			}else if(!maleRDO.isChecked() && femaleBFchanged){
 				calculateFemale();
+			}else{
+				bodyFatLL.setBackgroundResource(R.drawable.grey_button);
 			}
 		}
 		private void calculateMale(){
@@ -561,45 +603,36 @@ public class BCAActivity extends Activity {
 		}
 		
 		private void calcHeightWeight(){
+			System.out.println("CALCULATE HEIGHT WEIGHT");
 			boolean inStandards = false;
-			if(maleRDO.isChecked()){
-	
+			boolean calc = true;
+			if(maleRDO.isChecked() && HWchanged){
+				System.out.println("MALE && HWCHANGED");
 				if(weight > mData.weightMale[height-MIN_HEIGHT]){
 					inStandards = false;
 				}else{
 					inStandards = true;
 				}
-			}else{
+			}else if(HWchanged){
 				if(weight > mData.weightFemale[height-MIN_HEIGHT]){
 					inStandards = false;
 				}else{
 					inStandards = true;
 				}
+			}else{
+				HWLL.setBackgroundResource(R.drawable.grey_button);
+				calc = false;
 			}
 			
-			if(inStandards){
+			if(inStandards && calc){
 				
 				HWLL.setBackgroundResource(R.drawable.passbtn);
-			}else{
+			}else if(calc){
+				
 				HWLL.setBackgroundResource(R.drawable.failbtn);
 			}
 		}
-		private void setAlertDialog() {
-			final String[] items = {"17-26", "27-39", "40-45", "46+"};
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			
 
-			builder.setTitle("Choose Age Group");
-			builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-			    public void onClick(DialogInterface dialog, int item) {
-			     ageGroup = item;
-			     dialog.dismiss();
-			     }
-			});
-			
-
-			alertdialog = builder.create();
-		}
 		
 		
 

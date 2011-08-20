@@ -2,6 +2,7 @@ package com.andrios.marinepft;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -20,7 +22,9 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class PFTActivity extends Activity {
 	
-	RadioButton maleRDO, femaleRDO;
+	SegmentedControlButton maleRDO;
+	SegmentedControlButton age17BTN, age27BTN, age40BTN, age46BTN;
+	
 	CheckBox SitReachCheckBox;
 	SeekBar ageSeekBar, pullupSeekBar, crunchSeekBar, runSeekBar;
 	TextView ageLBL, pullupLBL, pullupTXTLBL, crunchLBL, minutesLBL, runLBL, scoreLBL;
@@ -68,21 +72,26 @@ public class PFTActivity extends Activity {
 		
 	}
 
+
+	
 	private void setConnections() {
 
 		
 
-		maleRDO  = (RadioButton) findViewById(R.id.calculatorMaleRDO); 
-		femaleRDO  = (RadioButton) findViewById(R.id.calculatorFemaleRDO);
-
-
-		ageSeekBar = (SeekBar) findViewById(R.id.calculatorAgeSeekBar); 
+		maleRDO  = (SegmentedControlButton) findViewById(R.id.pftActivityMaleSegment); 
+		age17BTN  = (SegmentedControlButton) findViewById(R.id.pftActivityAge17Segment); 
+		age27BTN  = (SegmentedControlButton) findViewById(R.id.pftActivityAge27Segment); 
+		age40BTN  = (SegmentedControlButton) findViewById(R.id.pftActivityAge40Segment); 
+		age46BTN  = (SegmentedControlButton) findViewById(R.id.pftActivityAge46Segment); 
+		
+		
+		
 		pullupSeekBar = (SeekBar) findViewById(R.id.calculatorPullupSeekBar); 
 		crunchSeekBar = (SeekBar) findViewById(R.id.calculatorcrunchSeekBar);
 		runSeekBar = (SeekBar) findViewById(R.id.calculatorRunTimeSeekBar);
 		 
 		scoreLBL = (TextView) findViewById(R.id.calculatorScoreLBL);
-		ageLBL = (TextView) findViewById(R.id.calculatorAgeLBL);
+		
 		pullupLBL = (TextView) findViewById(R.id.calculatorPullUpLBL);
 		pullupTXTLBL = (TextView) findViewById(R.id.calculatorPullUpTXTLBL);
 		crunchLBL = (TextView) findViewById(R.id.calculatorcrunchLBL);
@@ -93,18 +102,15 @@ public class PFTActivity extends Activity {
 		
 		 
 
-		ageUpBTN = (Button) findViewById(R.id.calculatorAgeUpBTN);
 		pushupUpBTN = (Button) findViewById(R.id.calculatorPushupsUpBTN);
 		crunchUpBTN = (Button) findViewById(R.id.calculatorcrunchsUpBTN);
 		secondUpBTN = (Button) findViewById(R.id.calculatorSecondsUpBTN);
 
-		ageDownBTN = (Button) findViewById(R.id.calculatorAgeDownBTN);
 		pushupDownBTN = (Button) findViewById(R.id.calculatorPushupsDownBTN);
 		crunchDownBTN = (Button) findViewById(R.id.calculatorcrunchsDownBTN);
 		secondDownBTN = (Button) findViewById(R.id.calculatorSecondsDownBTN);
 		
-		ageSeekBar.setMax(80);//max age 100
-		ageSeekBar.setProgress(18);
+		
 		
 		pullupSeekBar.setMax(25);//max pullups is 20 FAH 70 sec
 		crunchSeekBar.setMax(100);//max crunchs is 100 male / female
@@ -120,24 +126,8 @@ public class PFTActivity extends Activity {
 	}
 	
 	private void setOnClickListeners() {
-		ageSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-
-			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-				age = arg1;
-				ageLBL.setText(Integer.toString(age));
-				calculateScore();
-				
-			}
-
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				
-			}
-
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				
-			}
-			
-		});
+		
+		
 		
 		pullupSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 
@@ -200,20 +190,7 @@ public class PFTActivity extends Activity {
 			}
 			
 		});
-		ageUpBTN.setOnClickListener(new OnClickListener(){
 
-			public void onClick(View v) {
-				age += 1;
-				if(age > 80){
-					age = 80;
-				}
-				
-				ageSeekBar.setProgress(age);
-				
-				calculateScore();
-			}
-			
-		});
 		
 		pushupUpBTN.setOnClickListener(new OnClickListener(){
 
@@ -262,20 +239,7 @@ public class PFTActivity extends Activity {
 			
 		});
 		
-		ageDownBTN.setOnClickListener(new OnClickListener(){
 
-			public void onClick(View v) {
-				age -= 1;
-				if(age < 0){
-					age = 0;
-				}
-				
-				ageSeekBar.setProgress(age);
-				
-				calculateScore();
-			}
-			
-		});
 		
 		pushupDownBTN.setOnClickListener(new OnClickListener(){
 
@@ -356,6 +320,54 @@ public class PFTActivity extends Activity {
 			}
 			
 		});
+		
+		age17BTN.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				if(arg1){
+					age = 17;
+					calculateScore();
+				}
+				
+			}
+			
+		});
+		
+		age27BTN.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				if(arg1){
+					age = 27;
+					calculateScore();
+				}
+				
+			}
+			
+		});
+		
+		age40BTN.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				if(arg1){
+					age = 40;
+					calculateScore();
+				}
+				
+			}
+			
+		});
+		
+		age46BTN.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				if(arg1){
+					age = 46;
+					calculateScore();
+				}
+				
+			}
+			
+		});
 	
 
 		
@@ -396,58 +408,79 @@ public class PFTActivity extends Activity {
 			
 			if(totalScore == 0){
 				if(changed()){
+					scoreLBL.setBackgroundColor(Color.RED);
+					
+
+					
 					scoreLBL.setText("Fail");
 				}
 			}else{
 				if(age <= 26){
 					if(totalScore >= 225){
-
+						scoreLBL.setBackgroundColor(Color.GREEN);
 						scoreLBL.setText("1st Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 175){
-						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
+						scoreLBL.setBackgroundColor(Color.GREEN);
+						scoreLBL.setText("2nd Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 135){
+						scoreLBL.setBackgroundColor(Color.GREEN);
 						scoreLBL.setText("3rd Class: " + Integer.toString(totalScore));
 					}else{
+						scoreLBL.setBackgroundColor(Color.RED);
 						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
 					}
 				}else if(age <= 39){
 					if(totalScore >= 200){
-
+						scoreLBL.setBackgroundColor(Color.GREEN);
 						scoreLBL.setText("1st Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 150){
-						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
+						scoreLBL.setBackgroundColor(Color.GREEN);
+						scoreLBL.setText("2nd Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 110){
+						scoreLBL.setBackgroundColor(Color.GREEN);
 						scoreLBL.setText("3rd Class: " + Integer.toString(totalScore));
 					}else{
+						scoreLBL.setBackgroundColor(Color.RED);
 						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
 					}
 				}else if(age <= 45){
 					if(totalScore >= 175){
-
+						scoreLBL.setBackgroundColor(Color.GREEN);
 						scoreLBL.setText("1st Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 125){
-						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
+						scoreLBL.setBackgroundColor(Color.GREEN);
+						scoreLBL.setText("2nd Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 88){
+						scoreLBL.setBackgroundColor(Color.GREEN);
 						scoreLBL.setText("3rd Class: " + Integer.toString(totalScore));
 					}else{
+						scoreLBL.setBackgroundColor(Color.RED);
 						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
 					}
 				}else if(age >= 46){
 					if(totalScore >= 150){
-
+						scoreLBL.setBackgroundColor(Color.GREEN);
 						scoreLBL.setText("1st Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 100){
-						scoreLBL.setText("2d Class: " + Integer.toString(totalScore));
+						scoreLBL.setBackgroundColor(Color.GREEN);
+						scoreLBL.setText("2nd Class: " + Integer.toString(totalScore));
 					}else if(totalScore >= 65){
+						scoreLBL.setBackgroundColor(Color.GREEN);
 						scoreLBL.setText("3rd Class: " + Integer.toString(totalScore));
 					}else{
+						scoreLBL.setBackgroundColor(Color.RED);
 						scoreLBL.setText("Fail: " + Integer.toString(totalScore));
 					}
 				}
 			}
+			scoreLBL.setTextColor(Color.BLACK);
+			scoreLBL.getBackground().setAlpha(100);
 		}else{
+			
 			scoreLBL.setText("Enter required metrics");
 		}
+		
+		
 		
 		
 	}
