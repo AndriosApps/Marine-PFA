@@ -4,18 +4,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Observable;
 
 import android.content.Context;
 import android.widget.Toast;
 
 
-public class AndriosData implements Serializable, Cloneable {
+public class AndriosData extends Observable implements Serializable, Cloneable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6149357292077176082L;
-
+	
+	boolean isMale;
+	int age;
+	
 	
 	
 	//Male
@@ -265,21 +269,36 @@ public class AndriosData implements Serializable, Cloneable {
 	
 	
 	public AndriosData(){
-		
+		isMale = true;
+		age = 17;
 		
 	}
 	
-
-	/**
-	 * Getter Methods
-	 */
+	public boolean getGender(){
+		return isMale;
+	}
 	
+	public int getAge(){
+		return age;
+	}
 	
 	
 	
 	/**
 	 * Setter Methods
 	 */
+	
+	public void setGender(boolean isMale){
+		this.isMale = isMale;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void setAge(int age){
+		this.age = age;
+		setChanged();
+		notifyObservers();
+	}
 	
 
 	

@@ -1,5 +1,8 @@
 package com.andrios.marinepft;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,8 +12,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -20,14 +21,14 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
-public class PFTActivity extends Activity {
+public class PFTActivity extends Activity implements Observer {
 	
-	SegmentedControlButton maleRDO;
+	SegmentedControlButton maleRDO, femaleRDO;
 	SegmentedControlButton age17BTN, age27BTN, age40BTN, age46BTN;
 	
 	CheckBox SitReachCheckBox;
 	SeekBar ageSeekBar, pullupSeekBar, crunchSeekBar, runSeekBar;
-	TextView ageLBL, pullupLBL, pullupTXTLBL, crunchLBL, minutesLBL, runLBL, scoreLBL;
+	TextView ageLBL, pullupLBL, pullupTXTLBL, pullupScoreLBL, crunchLBL, minutesLBL, runLBL, scoreLBL;
 	TextView pullupFailLBL, crunchFailLBL, runFailLBL;
 	Button minuteUpBTN, minuteDownBTN, secondUpBTN, secondDownBTN;
 	Button ageUpBTN, ageDownBTN, pushupUpBTN, pushupDownBTN, crunchUpBTN, crunchDownBTN;
@@ -46,21 +47,18 @@ public class PFTActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pftactivity);
         
-        getExtras();
+        
         setConnections();
         setOnClickListeners();
+        getExtras();
         setTracker();
     }
 
-
-
+ 
 	private void setTracker() {
 		tracker = GoogleAnalyticsTracker.getInstance();
-
 	    // Start the tracker in manual dispatch mode...
-	    tracker.start("UA-23366060-3", this);
-	    
-		
+	    tracker.start("@string/tracker_id", this);
 	}
 
 
@@ -69,7 +67,21 @@ public class PFTActivity extends Activity {
 		Intent intent = this.getIntent();
 		
 		mData = (AndriosData) intent.getSerializableExtra("data");
+		mData.addObserver(this);
+		age = mData.getAge();
+		if(age == 17){
+			age17BTN.setChecked(true);
+		}else if(age == 27){
+			age27BTN.setChecked(true);
+		}else if(age == 40){
+			age40BTN.setChecked(true);
+		}else if(age == 46){
+			age46BTN.setChecked(true);
+		}
 		
+		if(!mData.getGender()){
+			femaleRDO.setChecked(true);
+		}
 	}
 
 
@@ -78,7 +90,8 @@ public class PFTActivity extends Activity {
 
 		
 
-		maleRDO  = (SegmentedControlButton) findViewById(R.id.pftActivityMaleSegment); 
+		maleRDO  = (SegmentedControlButton) findViewById(R.id.pftActivityMaleSegment);
+		femaleRDO  = (SegmentedControlButton) findViewById(R.id.pftActivityFemaleSegment); 
 		age17BTN  = (SegmentedControlButton) findViewById(R.id.pftActivityAge17Segment); 
 		age27BTN  = (SegmentedControlButton) findViewById(R.id.pftActivityAge27Segment); 
 		age40BTN  = (SegmentedControlButton) findViewById(R.id.pftActivityAge40Segment); 
@@ -94,6 +107,7 @@ public class PFTActivity extends Activity {
 		
 		pullupLBL = (TextView) findViewById(R.id.calculatorPullUpLBL);
 		pullupTXTLBL = (TextView) findViewById(R.id.calculatorPullUpTXTLBL);
+		pullupScoreLBL = (TextView) findViewById(R.id.pullupScoreLBL);
 		crunchLBL = (TextView) findViewById(R.id.calculatorcrunchLBL);
 		runLBL = (TextView) findViewById(R.id.calculatorRunLBL);
 		pullupFailLBL = (TextView) findViewById(R.id.calculatorPullupFailLBL);
@@ -296,8 +310,7 @@ public class PFTActivity extends Activity {
 				pullupchanged = false;
 				if(maleRDO.isChecked()){
 					pullupTXTLBL.setText("Pullups");
-					
-
+					pullupScoreLBL.setText("Pullups");
 					pullupSeekBar.setProgress(pullups);
 					pullupSeekBar.setMax(25);
 					pullupLBL.setText(Integer.toString(pullups));
@@ -305,16 +318,13 @@ public class PFTActivity extends Activity {
 					
 				}else{
 					pullupTXTLBL.setText("FAH");
-					
-
+					pullupScoreLBL.setText("FAH");
 					pullupSeekBar.setProgress(pullups);
 					pullupSeekBar.setMax(75);
 					pullupLBL.setText(Integer.toString(pullups));
-					
-					
 				}
 			
-				
+				mData.setGender(maleRDO.isChecked());
 				calculateScore();
 				
 			}
@@ -326,7 +336,9 @@ public class PFTActivity extends Activity {
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 				if(arg1){
 					age = 17;
+					mData.setAge(17);
 					calculateScore();
+					
 				}
 				
 			}
@@ -338,7 +350,9 @@ public class PFTActivity extends Activity {
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 				if(arg1){
 					age = 27;
+					mData.setAge(27);
 					calculateScore();
+					
 				}
 				
 			}
@@ -350,6 +364,7 @@ public class PFTActivity extends Activity {
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 				if(arg1){
 					age = 40;
+					mData.setAge(40);
 					calculateScore();
 				}
 				
@@ -362,6 +377,7 @@ public class PFTActivity extends Activity {
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 				if(arg1){
 					age = 46;
+					mData.setAge(46);
 					calculateScore();
 				}
 				
@@ -477,7 +493,7 @@ public class PFTActivity extends Activity {
 			scoreLBL.getBackground().setAlpha(100);
 		}else{
 			
-			scoreLBL.setText("Enter required metrics");
+			scoreLBL.setText("");
 		}
 		
 		
@@ -490,8 +506,6 @@ public class PFTActivity extends Activity {
 
 	
 	private void scoreRun(){
-		System.out.println("Seconds: " + runtime);
-		
 		if(maleRDO.isChecked()){
 			runScore = 10 + (1980-runtime)/(int)10;
 			if (runScore>100)
@@ -567,9 +581,12 @@ public class PFTActivity extends Activity {
 				}
 			}
 		}
-		if(runScore > 0){
+		if(!runchanged){
+			runFailLBL.setText("");
+		}else if(runScore > 0){
 			runFailLBL.setText(Integer.toString(runScore));
 		}else{
+			
 			runFailLBL.setText("Fail");
 		}
 	}
@@ -596,7 +613,9 @@ public class PFTActivity extends Activity {
 			}
 			
 		}
-		if(pullupScore > 0){
+		if(!pullupchanged){
+			pullupFailLBL.setText("");
+		}else if(pullupScore > 0){
 			pullupFailLBL.setText(Integer.toString(pullupScore));
 		}else{
 			pullupFailLBL.setText("Fail");
@@ -613,7 +632,9 @@ public class PFTActivity extends Activity {
 		}else{
 			crunchScore = 0;
 		}
-		if(crunchScore > 0){
+		if(!crunchchanged){
+			crunchFailLBL.setText("");
+		}else if(crunchScore > 0){
 			crunchFailLBL.setText(Integer.toString(crunchScore));
 		}else{
 			crunchFailLBL.setText("Fail");
@@ -636,6 +657,27 @@ public class PFTActivity extends Activity {
 	public void onPause(){
 		super.onPause();
 		tracker.dispatch();
+	}
+
+
+
+	public void update(Observable arg0, Object arg1) {
+		System.out.println("UPDATE PFT");
+		age = mData.getAge();
+		if(age == 17){
+			age17BTN.setChecked(true);
+		}else if(age == 27){
+			age27BTN.setChecked(true);
+		}else if(age == 40){
+			age40BTN.setChecked(true);
+		}else if(age == 46){
+			age46BTN.setChecked(true);
+		}
+		
+		
+		femaleRDO.setChecked(!mData.getGender());
+		maleRDO.setChecked(mData.getGender());
+		
 	}
 
 }

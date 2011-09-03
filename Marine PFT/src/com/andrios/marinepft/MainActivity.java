@@ -1,7 +1,8 @@
 package com.andrios.marinepft;
 
 
-import android.app.Activity;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -25,7 +26,20 @@ public class MainActivity extends TabActivity {
     }
 
 	private void readData() {
-		mData = new AndriosData();
+		try {
+			FileInputStream fis = openFileInput("data");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+
+			mData = (AndriosData) ois.readObject();
+			ois.close();
+			fis.close();
+			
+		} catch (Exception e) {
+			mData = new AndriosData();
+			
+			
+		}
+		
 		
 	}
 
@@ -63,6 +77,11 @@ public class MainActivity extends TabActivity {
         mTabHost.setCurrentTab(0);
 	}
 	
+	
+	public void onDestroy(){
+		super.onDestroy();
+		mData.write(this);
+	}
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 	  // ignore orientation/keyboard change

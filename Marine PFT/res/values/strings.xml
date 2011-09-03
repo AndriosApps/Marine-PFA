@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">Marine PFT</string>
+    <string name="tracker_id">UA-23366060-3</string>
 </resources>

@@ -1,5 +1,8 @@
 package com.andrios.marinepft;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
@@ -13,12 +16,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-public class CFTActivity extends Activity {
+public class CFTActivity extends Activity implements Observer {
 
 	private static int minMTCTime = 120;
 	private static int maxMTCTime = 360;
@@ -46,7 +48,7 @@ public class CFTActivity extends Activity {
 	
 	
 	
-	int age = 17, mtcTime = minMTCTime, ammoLifts = 0, mufTime;
+	int age = 17, mtcTime = minMTCTime, ammoLifts = 0, mufTime = minMUFTime;
 	int mtcScore, ammoLiftScore, mufScore;
 	boolean mtcFail, ammoLiftFail, mufFail;
 	boolean mtcChanged, ammoLiftChanged, mufChanged;
@@ -65,9 +67,10 @@ public class CFTActivity extends Activity {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.cftactivity);
 	        
-	        getExtras();
+	      
 	        setConnections();
 	        setOnClickListeners();
+	        getExtras();
 	        setTracker();
 	    }
 
@@ -75,8 +78,22 @@ public class CFTActivity extends Activity {
 			Intent intent = this.getIntent();
 			
 			mData = (AndriosData) intent.getSerializableExtra("data");
-		
-	}
+			mData.addObserver(this);
+			age = mData.getAge();
+			if(age == 17){
+				age17Segment.setChecked(true);
+			}else if(age == 27){
+				age27Segment.setChecked(true);
+			}else if(age == 40){
+				age40Segment.setChecked(true);
+			}else if(age == 46){
+				age46Segment.setChecked(true);
+			}
+			
+			if(!mData.getGender()){
+				femaleSegment.setChecked(true);
+			}
+		}
 
 		private void setConnections() {
 		
@@ -134,12 +151,8 @@ public class CFTActivity extends Activity {
 			maleSegment.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-					if(arg1){
-
-						male = true;
-					}else{
-						male = false;
-					}
+					male = arg1;
+					mData.setGender(male);
 					calcScore();
 				}
 				
@@ -153,8 +166,9 @@ public class CFTActivity extends Activity {
 
 				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 					if(arg1){
-						System.out.println("17 Changed");
+						
 						age = 17;
+						mData.setAge(17);
 						calcScore();
 					}
 					
@@ -167,8 +181,9 @@ public class CFTActivity extends Activity {
 
 				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 					if(arg1){
-						System.out.println("27 Changed");
+						
 						age = 27;
+						mData.setAge(27);
 						calcScore();
 					}
 					
@@ -180,8 +195,9 @@ public class CFTActivity extends Activity {
 
 				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 					if(arg1){
-						System.out.println("40 Changed");
+						
 						age = 40;
+						mData.setAge(40);
 						calcScore();
 					}
 					
@@ -193,8 +209,9 @@ public class CFTActivity extends Activity {
 
 				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 					if(arg1){
-						System.out.println("46 Changed");
+						
 						age = 46;
+						mData.setAge(46);
 						calcScore();
 					}
 					
@@ -362,8 +379,6 @@ public class CFTActivity extends Activity {
 	}
 		
 		private void calcScore(){
-			System.out.println("Age: "+ age);
-			System.out.println("isMale: " + male);
 			if(male){
 				calcMale();
 			}else{
@@ -534,6 +549,25 @@ public class CFTActivity extends Activity {
 			}
 			
 			return (minutesTXT + ":" + secondsTXT);
+			
+		}
+
+		public void update(Observable observable, Object data) {
+			System.out.println("UPDATE CFT");
+			age = mData.getAge();
+			if(age == 17){
+				age17Segment.setChecked(true);
+			}else if(age == 27){
+				age27Segment.setChecked(true);
+			}else if(age == 40){
+				age40Segment.setChecked(true);
+			}else if(age == 46){
+				age46Segment.setChecked(true);
+			}
+			
+			
+			femaleSegment.setChecked(!mData.getGender());
+			maleSegment.setChecked(mData.getGender());
 			
 		}
 		
