@@ -652,6 +652,7 @@ public class BCAActivity extends Activity implements Observer {
 		public void update(Observable observable, Object data) {
 
 			System.out.println("UPDATE BCA");
+			
 			int age = mData.getAge();
 			if(age == 17){
 				ageSpinner.setSelection(0);
@@ -663,9 +664,12 @@ public class BCAActivity extends Activity implements Observer {
 				ageSpinner.setSelection(3);
 			}
 			
+			if(!mData.getGender()){
+				femaleRDO.setChecked(true);
+			}else{
+				maleRDO.setChecked(true);
+			}
 			
-			femaleRDO.setChecked(!mData.getGender());
-			maleRDO.setChecked(mData.getGender());
 			
 			
 		}

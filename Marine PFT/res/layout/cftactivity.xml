@@ -31,9 +31,11 @@
     <LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/linearLayout3" android:gravity="center" android:layout_width="fill_parent" android:layout_weight="1">
         <LinearLayout android:orientation="vertical" android:id="@+id/LinearLayout09" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1">
             <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout11" android:layout_width="fill_parent">
-                <LinearLayout android:layout_height="fill_parent" android:id="@+id/LinearLayout07" android:layout_weight="1" android:gravity="center" android:layout_width="1px"></LinearLayout>
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/LinearLayout07" android:layout_weight="1" android:gravity="center" android:layout_width="1dip"></LinearLayout>
                 <TextView android:layout_height="wrap_content" android:gravity="center" android:id="@+id/cftActivityMoveToContactTXTLBL" android:text="Move to Contact" android:layout_weight="0" android:layout_width="75dip"></TextView>
-                <TextView android:layout_height="fill_parent" android:gravity="center_vertical" android:id="@+id/cftActivityMoveToContactLBL" android:text="00:00" android:layout_weight="1" android:layout_width="1px"></TextView>
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout1" android:layout_weight="1" android:layout_width="1dip">
+                    <TextView android:layout_height="fill_parent" android:id="@+id/cftActivityMoveToContactLBL" android:text="00:00" android:layout_weight="0" android:layout_width="75dip" android:gravity="center|center_vertical"></TextView>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout android:id="@+id/linearLayout20" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content">
                 <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout31" android:gravity="center" android:layout_width="60dip">
@@ -47,9 +49,11 @@
         </LinearLayout>
         <LinearLayout android:orientation="vertical" android:id="@+id/linearLayout6" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1">
             <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout8" android:layout_width="fill_parent">
-                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout15" android:layout_weight="1" android:gravity="center" android:layout_width="1px"></LinearLayout>
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout15" android:layout_weight="1" android:gravity="center" android:layout_width="1dip"></LinearLayout>
                 <TextView android:layout_height="wrap_content" android:gravity="center" android:id="@+id/textView7" android:text="Ammo Can Lifts" android:layout_width="75dip" android:layout_weight="0"></TextView>
-                <TextView android:layout_height="fill_parent" android:gravity="center_vertical" android:id="@+id/cftActivityAmmoCanLiftsNumLBL" android:text="0" android:layout_weight="1" android:layout_width="1px"></TextView>
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout2" android:layout_weight="1" android:layout_width="1dip">
+                    <TextView android:layout_height="fill_parent" android:id="@+id/cftActivityAmmoCanLiftsNumLBL" android:text="0" android:layout_weight="0" android:layout_width="75dip" android:gravity="center|center_vertical"></TextView>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout android:id="@+id/linearLayout19" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content">
                 <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout29" android:gravity="center" android:layout_width="60dip">
@@ -63,9 +67,11 @@
         </LinearLayout>
         <LinearLayout android:orientation="vertical" android:id="@+id/LinearLayout02" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1">
             <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout7" android:layout_width="fill_parent">
-                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout16" android:layout_weight="1" android:gravity="center" android:layout_width="1px"></LinearLayout>
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout16" android:layout_weight="1" android:gravity="center" android:layout_width="1dip"></LinearLayout>
                 <TextView android:layout_height="wrap_content" android:gravity="center" android:id="@+id/TextView01" android:text="Manuever Under Fire" android:layout_width="75dip" android:layout_weight="0"></TextView>
-                <TextView android:layout_height="fill_parent" android:gravity="center_vertical" android:id="@+id/cftActivityManueverUnderFireLBL" android:text="00:00" android:layout_weight="1" android:layout_width="1px"></TextView>
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout5" android:layout_weight="1" android:layout_width="1dip">
+                    <TextView android:layout_height="fill_parent" android:id="@+id/cftActivityManueverUnderFireLBL" android:text="00:00" android:layout_weight="0" android:layout_width="75dip" android:gravity="center|center_vertical"></TextView>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout android:id="@+id/linearLayout17" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content">
                 <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout27" android:gravity="center" android:layout_width="60dip">

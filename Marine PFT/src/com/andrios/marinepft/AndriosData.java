@@ -289,15 +289,23 @@ public class AndriosData extends Observable implements Serializable, Cloneable {
 	 */
 	
 	public void setGender(boolean isMale){
-		this.isMale = isMale;
-		setChanged();
-		notifyObservers();
+		if(this.isMale != isMale){
+			this.isMale = isMale;
+			setChanged();
+			notifyObservers();
+			System.out.println("MODEL UPDATE GENDER");
+		}
+		
 	}
 	
 	public void setAge(int age){
-		this.age = age;
-		setChanged();
-		notifyObservers();
+		if(this.age != age){
+			this.age = age;
+			setChanged();
+			notifyObservers();
+			System.out.println("MODEL UPDATE AGE");
+		}
+		
 	}
 	
 
