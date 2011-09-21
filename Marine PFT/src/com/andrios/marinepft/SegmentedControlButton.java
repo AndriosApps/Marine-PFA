@@ -48,12 +48,12 @@ public class SegmentedControlButton extends RadioButton {
         float textWidth = textPaint.measureText(text);
 
         if (isChecked()) {
-            GradientDrawable grad = new GradientDrawable(Orientation.TOP_BOTTOM, new int[] { 0xffdcdcdc, 0xff111111 });
+            GradientDrawable grad = new GradientDrawable(Orientation.TOP_BOTTOM, new int[] { 0x99d11818, 0xff111111 });
             grad.setBounds(0, 0, this.getWidth(), this.getHeight());
             grad.draw(canvas);
             textPaint.setColor(Color.WHITE);
         } else {
-            GradientDrawable grad = new GradientDrawable(Orientation.TOP_BOTTOM, new int[] { 0xffa5a5a5, 0xff000000 });
+            GradientDrawable grad = new GradientDrawable(Orientation.TOP_BOTTOM, new int[] { 0xff737371, 0x00000000 });
             grad.setBounds(0, 0, this.getWidth(), this.getHeight());
             grad.draw(canvas);
             textPaint.setColor(0xffcccccc);

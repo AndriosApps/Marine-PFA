@@ -16,7 +16,7 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 public class InstructionsActivity extends Activity {
 
 	
-	LinearLayout MCOLL, BCALL, TecomCftLL;
+	Button mcoBTN, bcaBTN, tecomBTN;
 	AdView adView;
 	AdRequest request;
 	GoogleAnalyticsTracker tracker;
@@ -34,10 +34,10 @@ public class InstructionsActivity extends Activity {
     
 
 	private void setConnections() {
-		TecomCftLL = (LinearLayout) findViewById(R.id.TecomCFTLinearLayout);
+		tecomBTN = (Button) findViewById(R.id.instructionActivityTECOMBTN);
 		rateBTN = (Button) findViewById(R.id.instructionActivityRateBTN);
-		MCOLL = (LinearLayout) findViewById(R.id.MCOLinearLayout);
-		BCALL = (LinearLayout) findViewById(R.id.BCALinearLayout);
+		mcoBTN = (Button) findViewById(R.id.instructionActivityMCO1BTN);
+		bcaBTN = (Button) findViewById(R.id.instructionActivityMCO2BTN);
 		
 		
 		adView = (AdView)this.findViewById(R.id.instructionsAdView);
@@ -59,7 +59,7 @@ public class InstructionsActivity extends Activity {
 			}
 			
 		});
-		MCOLL.setOnClickListener(new OnClickListener(){
+		mcoBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
 				 tracker.trackEvent(
@@ -73,7 +73,7 @@ public class InstructionsActivity extends Activity {
 			
 		});
 		
-		BCALL.setOnClickListener(new OnClickListener(){
+		bcaBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
 				 tracker.trackEvent(
@@ -86,7 +86,7 @@ public class InstructionsActivity extends Activity {
 			}
 			
 		});
-		TecomCftLL.setOnClickListener(new OnClickListener(){
+		tecomBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
 				 tracker.trackEvent(
