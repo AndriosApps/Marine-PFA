@@ -99,7 +99,19 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout18" android:layout_weight="0" android:layout_height="54dip">
+
+    
+      <RelativeLayout android:layout_width="fill_parent" 
+      android:layout_height="50dip" 
+      android:layout_weight="0" 
+      android:id="@+id/pftActivityBottomBar">
+        <Button 
+        	android:id="@+id/pftActivityLogBTN" 
+        	android:layout_height="wrap_content"
+        	android:layout_centerInParent="true" 
+        	android:visibility="invisible"
+        	android:text="Log PFT" android:layout_width="125dip">
+        </Button>
     	<com.google.ads.AdView 
 		xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
 		android:id="@+id/homeAdView"
@@ -107,6 +119,6 @@
         android:layout_height="wrap_content"
         ads:adUnitId="a14deec86da5f51"
         ads:adSize="BANNER"
-        android:layout_weight="0" />	
-    </LinearLayout>
+        android:layout_weight="0" />		
+    </RelativeLayout>
 </LinearLayout>

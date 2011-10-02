@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,13 +48,16 @@ public class BCAActivity extends Activity implements Observer {
 	Spinner ageSpinner;
 	SeekBar heightSeekBar, weightSeekBar;
 	Button heightUpBTN, heightDownBTN, weightUpBTN, weightDownBTN;
-	int height = 69, weight = 100, ageGroup= 0;
+	Button logBTN;
+	RelativeLayout bottomBar;
+	int height = 69, weight = 100, ageGroup= 0, age;
 	TextView maleNeckLBL, maleWaistLBL, femaleNeckLBL, femaleWaistLBL, femaleHipsLBL;
 	TextView differenceLBL, percentFatLBL, femaleDifferenceLBL, femalePercentFatLBL;
 	TextView weightLBL, heightInchLBL, heightFeetLBL;
 	TextView HWLBL, bodyFatLBL;
 	
-	boolean HWchanged, maleBFchanged, femaleBFchanged;
+	boolean HWchanged, maleBFchanged, femaleBFchanged, isLog, isPremium;
+	boolean inStandards, passBF;
 	private String array_spinner[];
 	LinearLayout HWLL, bodyFatLL;
 	
@@ -62,13 +66,48 @@ public class BCAActivity extends Activity implements Observer {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.bcaactivity);
 	        
-	        
+	        getExtras();
 	        setConnections();
 	        setOnClickListeners();
-	        getExtras();
+	        finishSetup();
 	        setTracker();
 	    }
 	  
+		private void setTracker() {
+			tracker = GoogleAnalyticsTracker.getInstance();
+			tracker.start(this.getString(R.string.ga_api_key),
+					getApplicationContext());
+		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+			tracker.trackPageView("/" + this.getLocalClassName());
+		}
+
+		@Override
+		public void onPause() {
+			super.onPause();
+			tracker.dispatch();
+		}
+	  
+		private void finishSetup() {
+			if(age <= 26){
+				ageSpinner.setSelection(0);
+			}else if(age <= 39){
+				ageSpinner.setSelection(1);
+			}else if(age <= 45){
+				ageSpinner.setSelection(2);
+			}else if(age >= 46){
+				ageSpinner.setSelection(3);
+			}
+			
+			if(!mData.getGender()){
+				femaleRDO.setChecked(true);
+			}
+		
+	}
+
 		@Override
 		public void onStart() {
 			super.onStart();
@@ -77,23 +116,13 @@ public class BCAActivity extends Activity implements Observer {
 	
 		private void getExtras() {
 			Intent intent = this.getIntent();
+			isLog = intent.getBooleanExtra("log", false);
+			isPremium = intent.getBooleanExtra("premium", false);	
 			
 			mData = (AndriosData) intent.getSerializableExtra("data");
 			mData.addObserver(this);
-			int age = mData.getAge();
-			if(age == 17){
-				ageSpinner.setSelection(0);
-			}else if(age == 27){
-				ageSpinner.setSelection(1);
-			}else if(age == 40){
-				ageSpinner.setSelection(2);
-			}else if(age == 46){
-				ageSpinner.setSelection(3);
-			}
+			age = mData.getAge();
 			
-			if(!mData.getGender()){
-				femaleRDO.setChecked(true);
-			}
 		}
 
 		private void setConnections() {
@@ -179,7 +208,15 @@ public class BCAActivity extends Activity implements Observer {
 			HWLL = (LinearLayout) findViewById(R.id.bcaActivityHeightWeightLL);
 
 			bodyFatLL = (LinearLayout) findViewById(R.id.bcaActivityBodyFatLL);
-			
+			logBTN = (Button) findViewById(R.id.bcaActivityLogBTN);
+			bottomBar = (RelativeLayout) findViewById(R.id.bcaActivityBottomBar);
+			if(!isLog){
+				bottomBar.setVisibility(View.GONE);	
+			}else{
+				maleRDO.setEnabled(false);
+				femaleRDO.setEnabled(false);
+				ageSpinner.setEnabled(false);
+			}
 			
 		}
 
@@ -496,6 +533,59 @@ public class BCAActivity extends Activity implements Observer {
 			
 		});
 		
+		logBTN.setOnClickListener(new OnClickListener(){
+
+			public void onClick(View v) {
+				Double myNeck = null;
+				Double myWaist = null;
+				String myHips = null;
+				Double myDiff = null;
+				String myCircum = null;
+				String myFat = null;
+				if(maleRDO.isChecked()){
+					myNeck = neck;
+					myWaist = waist;
+					myDiff = difference;
+					myCircum = differenceLBL.getText().toString().trim();
+					myHips = " ";
+					myFat = percentFatLBL.getText().toString().trim();
+				}else{
+					myNeck = fneck;
+					myWaist = fwaist;
+					myHips = Double.toString(fhips);
+					myDiff = fdifference;
+					myCircum = femaleDifferenceLBL.getText().toString().trim();
+					myFat = femalePercentFatLBL.getText().toString().trim();
+				}
+				
+				
+				BcaEntry b = new BcaEntry(
+						(formatInches() + " / " + Integer.toString(height)+"\""), 
+						Integer.toString(weight) + "lbs", 
+						Double.toString(myNeck), 
+						Double.toString(myWaist),
+						myHips,
+						myCircum,
+						myFat,
+						inStandards,
+						passBF
+				);
+				b.setAge(age);
+				
+				Intent intent = new Intent();
+				
+				
+				
+				
+				
+				intent.putExtra("entry", b);
+				BCAActivity.this.setResult(RESULT_OK, intent);
+				BCAActivity.this.finish();
+				
+			}
+			
+		});
+		
 	}
 		private void calcBodyFat(){
 			if(maleRDO.isChecked() && maleBFchanged){
@@ -515,26 +605,34 @@ public class BCAActivity extends Activity implements Observer {
 				if(ageGroup == 0){
 					if(percentFat > 18.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+						passBF = false;
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else if(ageGroup == 1){
 					if(percentFat > 19.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+						passBF = false;
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else if(ageGroup == 2){
 					if(percentFat > 20.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+						passBF = false;
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else{
 					if(percentFat > 21.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+						passBF = false;
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}
 			}else{
@@ -555,26 +653,34 @@ public class BCAActivity extends Activity implements Observer {
 				if(ageGroup == 0){
 					if(fpercentFat > 26.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+						passBF = false;
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else if(ageGroup == 1){
 					if(fpercentFat > 27.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+						passBF = false;
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else if(ageGroup == 2){
 					if(fpercentFat > 28.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+						passBF = false;
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else{
 					if(fpercentFat > 29.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
+						passBF = false;
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}
 			}else{
@@ -586,24 +692,7 @@ public class BCAActivity extends Activity implements Observer {
 		
 		}
 
-		private void setTracker() {
-			tracker = GoogleAnalyticsTracker.getInstance();
 
-		    // Start the tracker in manual dispatch mode...
-		    tracker.start("UA-23366060-2", this);
-		    
-			
-		}
-		
-		public void onResume(){
-			super.onResume();
-			tracker.trackPageView("BCA");
-		}
-		
-		public void onPause(){
-			super.onPause();
-			//tracker.dispatch();
-		}
 		
 		//returns string of type 5'9"
 		private String formatInches(){
@@ -621,7 +710,7 @@ public class BCAActivity extends Activity implements Observer {
 		}
 		
 		private void calcHeightWeight(){
-			boolean inStandards = false;
+			inStandards = false;
 			boolean calc = true;
 			if(maleRDO.isChecked() && HWchanged){
 				if(weight > mData.weightMale[height-MIN_HEIGHT]){

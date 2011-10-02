@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
@@ -31,6 +30,24 @@ public class InstructionsActivity extends Activity {
         setOnClickListeners();
         setTracker();
     }
+    
+	private void setTracker() {
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.start(this.getString(R.string.ga_api_key),
+				getApplicationContext());
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		tracker.trackPageView("/" + this.getLocalClassName());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		tracker.dispatch();
+	}
     
 
 	private void setConnections() {
@@ -104,22 +121,6 @@ public class InstructionsActivity extends Activity {
 		
 	}
 	
-	private void setTracker() {
-		tracker = GoogleAnalyticsTracker.getInstance();
-
-	    // Start the tracker in manual dispatch mode...
-	    tracker.start("UA-23366060-3", this);
-	}
-
 	
-	public void onResume(){
-		super.onResume();
-		tracker.trackPageView("Instructions");
-	}
-	
-	public void onPause(){
-		super.onPause();
-		tracker.dispatch();
-	}
 }
 

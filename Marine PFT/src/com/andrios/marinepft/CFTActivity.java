@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -34,7 +36,7 @@ public class CFTActivity extends Activity implements Observer {
 	AdView adView;
 	AdRequest request;
 	GoogleAnalyticsTracker tracker;
-	
+	Button logBTN;
 	
 	//MTC
 	SeekBar mtcSeekBar;
@@ -52,7 +54,8 @@ public class CFTActivity extends Activity implements Observer {
 	int mtcScore, ammoLiftScore, mufScore;
 	boolean mtcFail, ammoLiftFail, mufFail;
 	boolean mtcChanged, ammoLiftChanged, mufChanged;
-	boolean male = true;
+	boolean male = true, isLog, isPremium;
+	RelativeLayout bottomBar;
 	
 	//Ammo Lift
 	TextView ammoScoreLBL, ammoNumLBL;
@@ -67,32 +70,57 @@ public class CFTActivity extends Activity implements Observer {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.cftactivity);
 	        
-	      
+	        getExtras();
 	        setConnections();
 	        setOnClickListeners();
-	        getExtras();
+	       finishSetup();
 	        setTracker();
 	    }
+	 
+		private void setTracker() {
+			tracker = GoogleAnalyticsTracker.getInstance();
+			tracker.start(this.getString(R.string.ga_api_key),
+					getApplicationContext());
+		}
 
-		private void getExtras() {
-			Intent intent = this.getIntent();
-			
-			mData = (AndriosData) intent.getSerializableExtra("data");
-			mData.addObserver(this);
-			age = mData.getAge();
-			if(age == 17){
+		@Override
+		public void onResume() {
+			super.onResume();
+			tracker.trackPageView("/" + this.getLocalClassName());
+		}
+
+		@Override
+		public void onPause() {
+			super.onPause();
+			tracker.dispatch();
+		}
+
+		private void finishSetup() {
+			if(age <= 26){
 				age17Segment.setChecked(true);
-			}else if(age == 27){
+			}else if(age <= 39){
 				age27Segment.setChecked(true);
-			}else if(age == 40){
+			}else if(age <= 45){
 				age40Segment.setChecked(true);
-			}else if(age == 46){
+			}else if(age >= 46){
 				age46Segment.setChecked(true);
 			}
 			
 			if(!mData.getGender()){
 				femaleSegment.setChecked(true);
 			}
+		
+		}
+
+		private void getExtras() {
+			Intent intent = this.getIntent();
+			isLog = intent.getBooleanExtra("log", false);
+			isPremium = intent.getBooleanExtra("premium", false);	
+			
+			mData = (AndriosData) intent.getSerializableExtra("data");
+			mData.addObserver(this);
+			age = mData.getAge();
+			
 		}
 
 		private void setConnections() {
@@ -142,9 +170,24 @@ public class CFTActivity extends Activity implements Observer {
 		
 		adView = (AdView)this.findViewById(R.id.CFTAdView);
 	      
-	    request = new AdRequest();
-		request.setTesting(false);
-		adView.loadAd(request);
+		logBTN = (Button) findViewById(R.id.cftActivityLogBTN);
+		  
+		
+		if(!isPremium){
+			request = new AdRequest();
+			request.setTesting(false);
+			adView.loadAd(request);
+		}else{
+			adView.setVisibility(View.INVISIBLE);
+			if(!isLog){
+				
+				bottomBar = (RelativeLayout) findViewById(R.id.cftActivityBottomBar);
+				bottomBar.setVisibility(View.GONE);
+				
+			}else{
+				logBTN.setVisibility(View.VISIBLE);
+			}
+		}
 	}
 
 		private void setOnClickListeners() {
@@ -375,6 +418,38 @@ public class CFTActivity extends Activity implements Observer {
 						}
 						
 					});
+					
+					logBTN.setOnClickListener(new OnClickListener(){
+						
+						public void onClick(View v) {
+							if(mtcChanged && ammoLiftChanged && mufChanged){
+								CftEntry p = new CftEntry(
+										formatTimer(mtcTime), 
+										Integer.toString(ammoLifts), 
+										formatTimer(mufTime), 
+										mtcScoreLBL.getText().toString(), 
+										ammoScoreLBL.getText().toString(), 
+										mufScoreLBL.getText().toString(), 
+										totalScoreLBL.getText().toString()
+								);
+								p.setAge(age);
+								Intent intent = new Intent();
+								
+								
+								
+								
+								
+								intent.putExtra("entry", p);
+								CFTActivity.this.setResult(RESULT_OK, intent);
+								CFTActivity.this.finish();
+							}else{
+								Toast.makeText(CFTActivity.this, "Enter Required Metrics", Toast.LENGTH_SHORT).show();
+							}
+							
+							
+						}
+						
+					});
 		
 	}
 		
@@ -514,24 +589,7 @@ public class CFTActivity extends Activity implements Observer {
 			}
 		}
 
-		private void setTracker() {
-			tracker = GoogleAnalyticsTracker.getInstance();
 
-		    // Start the tracker in manual dispatch mode...
-		    //tracker.start("UA-23366060-2", this);
-		    
-			
-		}
-		
-		public void onResume(){
-			super.onResume();
-			//tracker.trackPageView("CFT");
-		}
-		
-		public void onPause(){
-			super.onPause();
-			//tracker.dispatch();
-		}
 		
 		private String formatTimer(int time){
 			String minutesTXT, secondsTXT;

@@ -12,8 +12,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
@@ -32,6 +34,7 @@ public class PFTActivity extends Activity implements Observer {
 	TextView pullupFailLBL, crunchFailLBL, runFailLBL;
 	Button minuteUpBTN, minuteDownBTN, secondUpBTN, secondDownBTN;
 	Button ageUpBTN, ageDownBTN, pushupUpBTN, pushupDownBTN, crunchUpBTN, crunchDownBTN;
+	Button logBTN;
 	AndriosData mData;
 	AdView adView;
 	AdRequest request;
@@ -40,48 +43,68 @@ public class PFTActivity extends Activity implements Observer {
 	
 	int age = 18, pullups = 0, crunches = 0, runtime = 0, minutes, seconds;
 	int runScore, pullupScore, crunchScore, totalScore;
-	boolean male;
+	boolean male, isLog, isPremium;
+	
+	RelativeLayout bottomBar;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pftactivity);
         
-        
+        getExtras();
         setConnections();
         setOnClickListeners();
-        getExtras();
+        finishSetup();
         setTracker();
     }
-
- 
+    
 	private void setTracker() {
 		tracker = GoogleAnalyticsTracker.getInstance();
-	    // Start the tracker in manual dispatch mode...
-	    tracker.start("@string/tracker_id", this);
+		tracker.start(this.getString(R.string.ga_api_key),
+				getApplicationContext());
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		tracker.trackPageView("/" + this.getLocalClassName());
+	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		tracker.dispatch();
+	}
 
-	private void getExtras() {
-		Intent intent = this.getIntent();
-		
-		mData = (AndriosData) intent.getSerializableExtra("data");
-		mData.addObserver(this);
-		age = mData.getAge();
-		if(age == 17){
+ 
+	private void finishSetup() {
+		if(age <= 26){
 			age17BTN.setChecked(true);
-		}else if(age == 27){
+		}else if(age <= 39){
 			age27BTN.setChecked(true);
-		}else if(age == 40){
+		}else if(age <= 45){
 			age40BTN.setChecked(true);
-		}else if(age == 46){
+		}else if(age >= 46){
 			age46BTN.setChecked(true);
 		}
 		
 		if(!mData.getGender()){
 			femaleRDO.setChecked(true);
 		}
+		
+	}
+
+
+	private void getExtras() {
+		Intent intent = this.getIntent();
+		isLog = intent.getBooleanExtra("log", false);
+		isPremium = intent.getBooleanExtra("premium", false);	
+		
+		mData = (AndriosData) intent.getSerializableExtra("data");
+		mData.addObserver(this);
+		age = mData.getAge();
+		
 	}
 
 
@@ -133,10 +156,24 @@ public class PFTActivity extends Activity implements Observer {
 								//      max value to 40*60 = 2400.
 			
 		adView = (AdView)this.findViewById(R.id.homeAdView);
-	      
-	    request = new AdRequest();
-		request.setTesting(false);
-		adView.loadAd(request);
+		logBTN = (Button) findViewById(R.id.pftActivityLogBTN);
+	  
+		
+		if(!isPremium){
+			 request = new AdRequest();
+				request.setTesting(false);
+				adView.loadAd(request);
+		}else{
+			adView.setVisibility(View.INVISIBLE);
+			if(!isLog){
+				
+				bottomBar = (RelativeLayout) findViewById(R.id.pftActivityBottomBar);
+				bottomBar.setVisibility(View.GONE);
+				
+			}else{
+				logBTN.setVisibility(View.VISIBLE);
+			}
+		}
 	}
 	
 	private void setOnClickListeners() {
@@ -385,12 +422,42 @@ public class PFTActivity extends Activity implements Observer {
 			
 		});
 	
+		logBTN.setOnClickListener(new OnClickListener(){
 
+			public void onClick(View v) {
+				if(runchanged && pullupchanged && crunchchanged){
+					PftEntry p = new PftEntry(
+							Integer.toString(pullups), 
+							Integer.toString(crunches), 
+							formatTimer(), 
+							pullupFailLBL.getText().toString(), 
+							crunchFailLBL.getText().toString(), 
+							runFailLBL.getText().toString(), 
+							scoreLBL.getText().toString()
+					);
+					p.setAge(age);
+					Intent intent = new Intent();
+					
+					
+					
+					
+					
+					intent.putExtra("entry", p);
+					PFTActivity.this.setResult(RESULT_OK, intent);
+					PFTActivity.this.finish();
+				}else{
+					Toast.makeText(PFTActivity.this, "Enter Required Metrics", Toast.LENGTH_SHORT).show();
+				}
+				
+				
+			}
+			
+		});
 		
 		
 	}
 	
-	private void formatTimer(){
+	private String formatTimer(){
 		String minutesTXT, secondsTXT;
 		if(minutes < 10){
 			minutesTXT = "0"+Integer.toString(minutes);
@@ -402,9 +469,10 @@ public class PFTActivity extends Activity implements Observer {
 		}else{
 			secondsTXT = Integer.toString(seconds);
 		}
-		runLBL.setText(minutesTXT + ":" + secondsTXT);
+		String timeString = minutesTXT + ":" + secondsTXT;
+		runLBL.setText(timeString);
 		
-		
+		return timeString;
 	}
 	
 	private void calculateScore(){
@@ -649,15 +717,7 @@ public class PFTActivity extends Activity implements Observer {
 		
 		return changed;
 	}
-	public void onResume(){
-		super.onResume();
-		tracker.trackPageView("PRT");
-	}
-	
-	public void onPause(){
-		super.onPause();
-		tracker.dispatch();
-	}
+
 
 
 
