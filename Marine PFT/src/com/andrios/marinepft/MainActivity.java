@@ -203,7 +203,7 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 	@Override
 	public void onBillingChecked(boolean supported) {
 		
-		
+		System.out.println("Billing Supported: " + supported);//TODO REmove
 	}
 
 
@@ -212,8 +212,11 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 	public void onPurchaseStateChanged(String itemId, PurchaseState state) {
 		if(itemId.equals("premium_features") && PurchaseState.PURCHASED.equals(state)){
 			premium = true;
+			System.out.println("Premium Features: Purchased");//TODO REmove
 		}else if(itemId.equals("premium_features") && PurchaseState.CANCELLED.equals(state)){
+			System.out.println("Premium Features: Cancelled ");//TODO REmove
 		}if(itemId.equals("premium_features") && PurchaseState.REFUNDED.equals(state)){
+			System.out.println("Premium Features: Refunded ");//TODO REmove
 		}
 	}
 
@@ -225,14 +228,16 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 	}
 	
 	private void updateOwnedItems() {
-		
+		System.out.println("Update Owned Items");//TODO REmove
 		List<Transaction> transactions = BillingController.getTransactions(this);
 		final ArrayList<String> ownedItems = new ArrayList<String>();
 		premium = false;
+		System.out.println("Premium set to false for now");//TODO REmove
 		for (Transaction t : transactions) {
 			if (t.purchaseState == PurchaseState.PURCHASED) {
 				if(t.productId.equals("premium_features")){
 					premium = true;
+					System.out.println("Premium Verified");//TODO REmove
 					break;
 				}
 				
