@@ -26,14 +26,14 @@
         
         
         
-        <activity android:name=".BCAActivity" 
+        <activity android:name=".MainActivity" 
         	android:label="@string/app_name" 
         	android:configChanges="orientation|keyboardHidden" 
         	android:screenOrientation="portrait"> 
         	<intent-filter>
-        		<action android:name="andrios.bca.android.intent.action.MAIN"/> 
-        		            	<category android:name="android.intent.category.LAUNCHER"/>
-        		            	<category android:name="android.intent.category.DEFAULT"/> 
+        		<action android:name="andrios.bca.android.intent.action.VIEW"/> 
+        		<category android:name="android.intent.category.LAUNCHER" />
+        		            	 <category android:name="android.intent.category.DEFAULT"/> 
         	</intent-filter> 
         </activity>
                 <activity android:name=".PFTActivity" 
@@ -41,8 +41,8 @@
         	android:configChanges="orientation|keyboardHidden" 
         	android:screenOrientation="portrait"> 
         	<intent-filter>
-        		<action android:name="andrios.pft.android.intent.action.MAIN"/> 
-        		            	<category android:name="android.intent.category.LAUNCHER"/>
+        		<action android:name="andrios.pft.android.intent.action.VIEW"/> 
+        		            	<category android:name="android.intent.category.LAUNCHER" />
         		            	<category android:name="android.intent.category.DEFAULT"/> 
         	</intent-filter> 
         </activity>
@@ -51,8 +51,8 @@
         	android:configChanges="orientation|keyboardHidden" 
         	android:screenOrientation="portrait"> 
         	<intent-filter>
-        		<action android:name="andrios.cft.android.intent.action.MAIN"/> 
-        		            	<category android:name="android.intent.category.LAUNCHER"/>
+        		<action android:name="andrios.cft.android.intent.action.VIEW"/> 
+        		            	<category android:name="android.intent.category.LAUNCHER" />
         		            	<category android:name="android.intent.category.DEFAULT"/> 
         	</intent-filter> 
         </activity>
@@ -61,8 +61,8 @@
         	android:configChanges="orientation|keyboardHidden" 
         	android:screenOrientation="portrait"> 
         	<intent-filter>
-        		<action android:name="andrios.log.android.intent.action.MAIN"/> 
-        		            	<category android:name="android.intent.category.LAUNCHER"/>
+        		<action android:name="andrios.log.android.intent.action.VIEW"/> 
+        		            	<category android:name="android.intent.category.LAUNCHER" />
         		            	<category android:name="android.intent.category.DEFAULT"/> 
         	</intent-filter> 
         </activity>
