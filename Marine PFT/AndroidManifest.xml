@@ -21,16 +21,73 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".MainActivity" 
+        
+        
+        
+        
+        
+        <activity android:name=".BCAActivity" 
         	android:label="@string/app_name" 
         	android:configChanges="orientation|keyboardHidden" 
         	android:screenOrientation="portrait"> 
         	<intent-filter>
-        		<action android:name="andrios.android.intent.action.MAIN"/> 
-        		<category android:name="android.intent.category.DEFAULT"/> 
-        		<category android:name="android.intent.category.LAUNCHER"/>
+        		<action android:name="andrios.bca.android.intent.action.MAIN"/> 
+        		            	<category android:name="android.intent.category.LAUNCHER"/>
+        		            	<category android:name="android.intent.category.DEFAULT"/> 
         	</intent-filter> 
         </activity>
+                <activity android:name=".PFTActivity" 
+        	android:label="@string/app_name" 
+        	android:configChanges="orientation|keyboardHidden" 
+        	android:screenOrientation="portrait"> 
+        	<intent-filter>
+        		<action android:name="andrios.pft.android.intent.action.MAIN"/> 
+        		            	<category android:name="android.intent.category.LAUNCHER"/>
+        		            	<category android:name="android.intent.category.DEFAULT"/> 
+        	</intent-filter> 
+        </activity>
+                <activity android:name=".CFTActivity" 
+        	android:label="@string/app_name" 
+        	android:configChanges="orientation|keyboardHidden" 
+        	android:screenOrientation="portrait"> 
+        	<intent-filter>
+        		<action android:name="andrios.cft.android.intent.action.MAIN"/> 
+        		            	<category android:name="android.intent.category.LAUNCHER"/>
+        		            	<category android:name="android.intent.category.DEFAULT"/> 
+        	</intent-filter> 
+        </activity>
+                <activity android:name=".LogAcitivty" 
+        	android:label="@string/app_name" 
+        	android:configChanges="orientation|keyboardHidden" 
+        	android:screenOrientation="portrait"> 
+        	<intent-filter>
+        		<action android:name="andrios.log.android.intent.action.MAIN"/> 
+        		            	<category android:name="android.intent.category.LAUNCHER"/>
+        		            	<category android:name="android.intent.category.DEFAULT"/> 
+        	</intent-filter> 
+        </activity>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         <activity android:name="com.google.ads.AdActivity"
               android:configChanges="keyboard|keyboardHidden|orientation"/>
