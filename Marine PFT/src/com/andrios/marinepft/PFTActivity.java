@@ -102,6 +102,9 @@ public class PFTActivity extends Activity implements Observer {
 		isPremium = intent.getBooleanExtra("premium", false);	
 		
 		mData = (AndriosData) intent.getSerializableExtra("data");
+		if(mData == null){
+			mData = new AndriosData();
+		}
 		mData.addObserver(this);
 		age = mData.getAge();
 		

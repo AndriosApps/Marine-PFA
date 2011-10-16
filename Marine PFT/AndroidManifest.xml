@@ -10,98 +10,67 @@
       
     <application android:icon="@drawable/marine_corps_2" 
     			android:label="@string/app_name">
-        
-        <activity android:name="MainActivity"
-                  android:label="@string/app_name"
-                  android:screenOrientation="portrait" 
-                  android:configChanges="orientation|keyboardHidden">
-            <intent-filter>
-            	<action android:name="android.intent.action.MAIN"/>
-            	<category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        
-        
-        
-        
-        
+      
         
         <activity android:name=".MainActivity" 
         	android:label="@string/app_name" 
         	android:configChanges="orientation|keyboardHidden" 
         	android:screenOrientation="portrait"> 
         	<intent-filter>
-        		<action android:name="andrios.bca.android.intent.action.VIEW"/> 
-        		<category android:name="android.intent.category.LAUNCHER" />
-        		            	 <category android:name="android.intent.category.DEFAULT"/> 
+        		<action android:name="andrios.android.intent.action.MAIN"/> 
+        		<category android:name="android.intent.category.DEFAULT"/> 
+        		<category android:name="android.intent.category.LAUNCHER"/>
         	</intent-filter> 
         </activity>
-                <activity android:name=".PFTActivity" 
-        	android:label="@string/app_name" 
-        	android:configChanges="orientation|keyboardHidden" 
-        	android:screenOrientation="portrait"> 
-        	<intent-filter>
-        		<action android:name="andrios.pft.android.intent.action.VIEW"/> 
-        		            	<category android:name="android.intent.category.LAUNCHER" />
-        		            	<category android:name="android.intent.category.DEFAULT"/> 
-        	</intent-filter> 
-        </activity>
-                <activity android:name=".CFTActivity" 
-        	android:label="@string/app_name" 
-        	android:configChanges="orientation|keyboardHidden" 
-        	android:screenOrientation="portrait"> 
-        	<intent-filter>
-        		<action android:name="andrios.cft.android.intent.action.VIEW"/> 
-        		            	<category android:name="android.intent.category.LAUNCHER" />
-        		            	<category android:name="android.intent.category.DEFAULT"/> 
-        	</intent-filter> 
-        </activity>
-                <activity android:name=".LogAcitivty" 
-        	android:label="@string/app_name" 
-        	android:configChanges="orientation|keyboardHidden" 
-        	android:screenOrientation="portrait"> 
-        	<intent-filter>
-        		<action android:name="andrios.log.android.intent.action.VIEW"/> 
-        		            	<category android:name="android.intent.category.LAUNCHER" />
-        		            	<category android:name="android.intent.category.DEFAULT"/> 
-        	</intent-filter> 
-        </activity>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         <activity android:name="com.google.ads.AdActivity"
               android:configChanges="keyboard|keyboardHidden|orientation"/>
-        <activity android:name="PFTActivity" />
+        <activity android:name="PFTActivity" >
+        	 
+        		<intent-filter>
+        		<action android:name="andrios.android.intent.action.PFT"/> 
+        		<category android:name="android.intent.category.DEFAULT"/> 
+        		<category android:name="android.intent.category.LAUNCHER"/>
+        	</intent-filter> 
+        </activity>
        <activity android:name="InstructionsActivity" />
-        <activity android:name="BCAActivity" />
-        <activity android:name="CFTActivity" />
+        <activity android:name="BCAActivity" >
+        	 
+        		<intent-filter>
+        		<action android:name="andrios.android.intent.action.BCA"/> 
+        		<category android:name="android.intent.category.DEFAULT"/> 
+        		<category android:name="android.intent.category.LAUNCHER"/>
+        	</intent-filter> 
+        </activity>
+        <activity android:name="CFTActivity" >
+        	 
+        		<intent-filter>
+        		<action android:name="andrios.android.intent.action.CFT"/> 
+        		<category android:name="android.intent.category.DEFAULT"/> 
+        		<category android:name="android.intent.category.LAUNCHER"/>
+        	</intent-filter> 
+        </activity>
         
         <activity android:name="AboutActivity" />
         <activity android:name="CalculatorTabsActivity"
         android:configChanges="orientation|keyboardHidden" 
         	android:screenOrientation="portrait"  />
-        <activity android:name="ProfileActivity" />
-        <activity android:name="LogActivity" />
+        <activity android:name="ProfileActivity" >
+        	 
+        		<intent-filter>
+        		<action android:name="andrios.android.intent.action.PROFILE"/> 
+        		<category android:name="android.intent.category.DEFAULT"/> 
+        		<category android:name="android.intent.category.LAUNCHER"/>
+        	</intent-filter> 
+        </activity>
+        <activity android:name="LogActivity" >
+        	 
+        		<intent-filter>
+        		<action android:name="andrios.android.intent.action.LOG"/> 
+        		<category android:name="android.intent.category.DEFAULT"/> 
+        		<category android:name="android.intent.category.LAUNCHER"/>
+        	</intent-filter> 
+        </activity>
         <activity android:name="PftLogViewActivity" />
                 <activity android:name="CftLogViewActivity" />
                         <activity android:name="BcaLogViewActivity" />
