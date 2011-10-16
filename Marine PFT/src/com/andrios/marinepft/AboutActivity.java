@@ -23,7 +23,7 @@ public class AboutActivity extends Activity {
 	GoogleAnalyticsTracker tracker;
 	
     /** Called when the activity is first created. */
-   
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -58,7 +58,7 @@ public class AboutActivity extends Activity {
 		twitterBTN = (Button) findViewById(R.id.aboutActivityTwitterBTN);
 		emailBTN = (Button) findViewById(R.id.aboutActivityEmailBTN);
 		marketBTN = (Button) findViewById(R.id.aboutActivityMarketBTN);
-		facebookBTN.setVisibility(View.INVISIBLE);
+		
 	}
 
 
@@ -99,20 +99,14 @@ public class AboutActivity extends Activity {
 		facebookBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
-				//Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.facebook.com/pages/AndriOS/224807700868604"));
-				//startActivity(browserIntent);
-/*
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setClassName("com.facebook.katana", "com.facebook.katana.ProfileTabHostActivity");
-				intent.putExtra("extra_user_id", "224807700868604");
-				startActivity(intent);
-*/
-				Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "AndriOS Apps");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Navy PRT");
-				startActivity(Intent.createChooser(sharingIntent, "Share using"));
-
+				try{
+					String uri = "fb://page/224807700868604";
+					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+					startActivity(intent);
+				}catch(Exception e){
+					Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.facebook.com/pages/AndriOS/224807700868604"));
+					startActivity(browserIntent);
+				}
 				
 			}
 			
@@ -123,41 +117,15 @@ public class AboutActivity extends Activity {
 			public void onClick(View v) {
 			
 				String message = "@AndriOS_Apps";
-				Context context = AboutActivity.this;
-				/*	
-				try{
-				    Intent intent = new Intent(Intent.ACTION_SEND);
-				    intent.putExtra(Intent.EXTRA_TEXT, message);
-				    intent.setType("text/plain");
-				    final PackageManager pm = context.getPackageManager();
-				    final List activityList = pm.queryIntentActivities(intent, 0);
-				        int len =  activityList.size();
-				    for (int i = 0; i < len; i++) {
-				        final ResolveInfo app = (ResolveInfo) activityList.get(i);
-				        if ("com.twitter.android.PostActivity".equals(app.activityInfo.name)) {
-				            final ActivityInfo activity=app.activityInfo;
-				            final ComponentName name=new ComponentName(activity.applicationInfo.packageName, activity.name);
-				            intent=new Intent(Intent.ACTION_SEND);
-				            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-				            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-				            intent.setComponent(name);
-				            intent.putExtra(Intent.EXTRA_TEXT, message);
-				            context.startActivity(intent);
-				            break;
-				        }
-				        //TODO Add search for other twitter clients here.
-				    }
-				}
-				catch(final ActivityNotFoundException e) {
-					Toast.makeText(AboutActivity.this, "We currently only support the official Twitter Client. Tweet us @AndriOS_Apps", Toast.LENGTH_SHORT).show();
-				}
-
-*/
 				
-				Intent intent = findTwitterClient();
-				intent.putExtra(Intent.EXTRA_TEXT, message);
-				startActivity(Intent.createChooser(intent, null)); 
-	            //context.startActivity(intent);
+				try{
+					Intent intent = findTwitterClient();
+					intent.putExtra(Intent.EXTRA_TEXT, message);
+					startActivity(Intent.createChooser(intent, null)); 
+				}catch(Exception e){
+					Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://twitter.com/#!/AndriOS_Apps"));
+					startActivity(browserIntent);
+				}
 			}
 			
 		});
