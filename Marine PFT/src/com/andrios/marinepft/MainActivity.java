@@ -46,7 +46,7 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
         setContentView(R.layout.mainactivity);
         
 
-        
+        AppRater.app_launched(this);
         setConnections();
         setOnClickListeners();
         restoreTransactions();
