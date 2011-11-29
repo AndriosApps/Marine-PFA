@@ -437,8 +437,10 @@ public class PFTActivity extends Activity implements Observer {
 							crunchFailLBL.getText().toString(), 
 							runFailLBL.getText().toString(), 
 							scoreLBL.getText().toString()
+							
 					);
 					p.setAge(age);
+					p.isWaived0 = !mData.getGender();
 					Intent intent = new Intent();
 					
 					

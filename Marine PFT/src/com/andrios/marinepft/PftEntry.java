@@ -12,7 +12,7 @@ public class PftEntry extends LogEntry{
 	boolean isCrunchesWaived;
 	boolean isCardioWaived;
 	boolean isWaived0;
-	boolean isWaived1;
+	boolean isWaived1; //Used for identifying females 
 	boolean isWaived2;
 	boolean isWaived3;
 	boolean isWaived4;

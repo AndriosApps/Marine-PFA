@@ -1,5 +1,7 @@
 package com.andrios.marinepft;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -11,10 +13,15 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -43,6 +50,7 @@ public class CftLogViewActivity extends Activity {
 	Profile profile;
 	
 	Button saveBTN;
+	Button shareBTN;
 	OnClickListener myOnClickListener;
 	GoogleAnalyticsTracker tracker;
 	Spinner moodSpinner;
@@ -140,6 +148,7 @@ public class CftLogViewActivity extends Activity {
 		moodSpinner.setSelection(entry.getMood());
 		*/
 		saveBTN = (Button) findViewById(R.id.journalEntryViewActivitySaveBTN);
+		shareBTN = (Button) findViewById(R.id.journalEntryViewActivityShareBTN);
 		
 		dateLBL = (TextView) findViewById(R.id.journalEntryViewActivityDateLBL);
 		dateLBL.setText(entry.getDateString());
@@ -189,6 +198,19 @@ public class CftLogViewActivity extends Activity {
 					CftLogViewActivity.this.setResult(RESULT_OK, intent);
 					CftLogViewActivity.this.finish();
 				}
+				
+			}
+
+			
+
+			
+			
+		});
+		
+		shareBTN.setOnClickListener(new OnClickListener(){
+
+			public void onClick(View v) {
+				shareLog();
 				
 			}
 
@@ -289,5 +311,105 @@ public class CftLogViewActivity extends Activity {
 		    }
 
 		    return super.onKeyDown(keyCode, event);
+		}
+		
+public void shareLog(){
+			
+			LayoutInflater inflater = LayoutInflater.from(this);	
+			final View share_card_layout = inflater.inflate(R.layout.share_card_cft_view, null);
+			
+			// Populate Data
+			
+
+			final TextView dateLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_dateLBL);
+			dateLBL.setText(entry.getDateString());
+			
+			// Move to Contact
+			final TextView pullupLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_pullupLBL);
+			pullupLBL.setText("Move to Contact");
+			
+			final TextView pushupMetricLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_pullups_metricLBL);
+			pushupMetricLBL.setText(entry.getMTC());
+
+
+			final TextView pushupScoreLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_pullups_scoreLBL);
+			pushupScoreLBL.setText(entry.getMTCScore());
+			
+			
+			// Ammo Can Lifts
+			final TextView ammoCanLiftLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_crunchesLBL);
+			ammoCanLiftLBL.setText("Ammo Can Lifts");
+			
+
+			final TextView crunchesMetricLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_crunches_metricLBL);
+			crunchesMetricLBL.setText(entry.getACL());
+
+
+			final TextView crunchScoreLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_crunches_scoreLBL);
+			crunchScoreLBL.setText(entry.getACLScore());
+			
+			
+			// Manuever Under Fire
+			final TextView mufLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_cardioLBL);
+			mufLBL.setText("Manuever Under Fire");
+			
+			final TextView cardioMetricLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_cardio_metricLBL);
+			cardioMetricLBL.setText(entry.getMUF());
+
+
+
+			final TextView cardioScoreLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_cardio_scoreLBL);
+			cardioScoreLBL.setText(entry.getMUFScore());
+
+			final TextView totalScoreLBL = (TextView) share_card_layout.findViewById(R.id.share_card_prt_total_scoreLBL);
+			totalScoreLBL.setText(entry.getTotalScore());
+
+			
+			
+			
+			
+			
+			
+			//End Populate Data
+			share_card_layout.setDrawingCacheEnabled(true);
+			share_card_layout.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), 
+		            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+
+			share_card_layout.layout(0, 0, share_card_layout.getMeasuredWidth(), share_card_layout.getMeasuredHeight());
+			share_card_layout.buildDrawingCache(true);
+
+			saveBTN.setVisibility(View.GONE);
+			
+			
+			File root = android.os.Environment.getExternalStorageDirectory();               
+
+			 File dir = new File (root.getAbsolutePath() + "/download/");
+			try {
+				Bitmap bitmap = Bitmap.createBitmap(share_card_layout.getDrawingCache());
+
+				share_card_layout.setDrawingCacheEnabled(false);
+				bitmap.compress(CompressFormat.PNG, 100, new FileOutputStream(dir+"CFT.png"));
+				Toast.makeText(this, "Saved Image to " + dir,Toast.LENGTH_LONG).show();
+			} catch (Exception e) {
+				Toast.makeText(this, "Image Output failed",Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+			saveBTN.setVisibility(View.VISIBLE);
+			Intent picMessageIntent = new Intent(android.content.Intent.ACTION_SEND);  
+			picMessageIntent.setType("image/jpeg");  
+			
+			File downloadedPic =  new File(  
+					dir+"CFT.png");  
+			  
+			picMessageIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(downloadedPic)); 
+			picMessageIntent.putExtra(Intent.EXTRA_SUBJECT, "AndriOS Apps Marine PFT app for Android");
+			picMessageIntent.putExtra(Intent.EXTRA_TEXT, "CFT Score: " + entry.getTotalScore() + " @Andrios_Apps http://bit.ly/q83uCr #USMC");
+			 tracker.trackEvent(
+			            "Social",  // Category
+			            "Share",  // Action
+			            "Share CFT", // Label
+			            0);       // Value
+		    startActivity(Intent.createChooser(picMessageIntent, "Share Your PFT Score:"));
+		    
 		}
 }
