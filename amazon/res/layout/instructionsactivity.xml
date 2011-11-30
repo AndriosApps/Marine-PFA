@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" 
+  android:orientation="vertical" 
+  android:id="@+id/ll"
+  android:background="@drawable/background">
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent"  android:id="@+id/linearLayout1" android:gravity="center">
+        <TextView android:layout_height="wrap_content" android:text="MARINE CORPS PHYSICAL FITNESS PROGRAM" android:id="@+id/tv" android:textSize="18dip" android:layout_width="wrap_content" android:gravity="center"></TextView>
+    </LinearLayout>
+    <ScrollView android:layout_height="wrap_content" android:id="@+id/scrollView1" android:layout_width="fill_parent" android:layout_weight="1">
+        <LinearLayout android:id="@+id/linearLayout2" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+            <LinearLayout android:id="@+id/MCOLinearLayout" android:layout_height="75dip" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="horizontal" android:gravity="center|left">
+                <LinearLayout android:id="@+id/linearLayout3" android:layout_height="fill_parent" android:layout_width="wrap_content" android:gravity="center">
+                    <Button android:background="@drawable/button_mco_6100" android:layout_height="wrap_content"  android:layout_width="75dip" android:id="@+id/instructionActivityMCO1BTN"></Button>
+                </LinearLayout>
+                <TextView android:text="Official PFT/CFT Instruction" android:id="@+id/textView1" android:layout_width="fill_parent" android:layout_height="fill_parent" android:gravity="center"></TextView>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/BCALinearLayout" android:layout_height="75dip" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="horizontal" android:gravity="center|left">
+                <LinearLayout android:id="@+id/linearLayout6" android:layout_height="fill_parent" android:layout_width="wrap_content" android:gravity="center">
+                    <Button android:layout_height="wrap_content"  android:layout_width="75dip" android:background="@drawable/button_mco_6110" android:id="@+id/instructionActivityMCO2BTN"></Button>
+                </LinearLayout>
+                <TextView android:text="Official BCA Instruction" android:id="@+id/TextView03" android:layout_width="fill_parent" android:layout_height="fill_parent" android:gravity="center"></TextView>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/TecomCFTLinearLayout" android:layout_height="75dip" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="horizontal" android:gravity="center|left">
+                <LinearLayout android:id="@+id/linearLayout7" android:layout_height="fill_parent" android:layout_width="wrap_content" android:gravity="center">
+                    <Button android:layout_height="wrap_content"  android:layout_width="75dip" android:background="@drawable/button_tecom" android:id="@+id/instructionActivityTECOMBTN"></Button>
+                </LinearLayout>
+                <TextView android:text="Official CFT Resources" android:id="@+id/textView2" android:layout_width="fill_parent" android:layout_height="fill_parent" android:gravity="center"></TextView>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/linearLayout4" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="horizontal" android:gravity="center|left" android:layout_height="75dip">
+                <LinearLayout android:id="@+id/linearLayout8" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="0">
+                    <Button android:id="@+id/instructionActivityRateBTN" android:layout_height="wrap_content" android:textColor="#000000" android:text="Rate" android:layout_width="75dip" android:background="@drawable/button_star"></Button>
+                </LinearLayout>
+                <TextView android:text="If you find this app useful, please take a minute to rate it. Comments help us make this app better. If you rate below 4 stars please tell us why!" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView5" android:gravity="center" android:layout_weight="1"></TextView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_weight="0" android:id="@+id/linearLayout5" android:layout_height="wrap_content" android:gravity="center|bottom">
+    	<com.google.ads.AdView 
+		xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+		android:id="@+id/instructionsAdView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        ads:adUnitId="a14deec86da5f51"
+        ads:adSize="BANNER"
+        android:layout_weight="0" />
+    </LinearLayout>
+</LinearLayout>
+
