@@ -9,8 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.ads.AdRequest;
@@ -29,18 +31,25 @@ public class InstructionsActivity extends Activity {
 	AdView adView;
 	AdRequest request;
 	GoogleAnalyticsTracker tracker;
-	Button rateBTN;
+	boolean isPremium;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.instructionsactivity);
         
-
+        getExtras();
         setConnections();
         setOnClickListeners();
         setTracker();
     }
     
+	private void getExtras() {
+		Intent intent = this.getIntent();
+		isPremium = intent.getBooleanExtra("premium", false);	
+		
+	}
+
 	private void setTracker() {
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.start(this.getString(R.string.ga_api_key),
@@ -62,30 +71,24 @@ public class InstructionsActivity extends Activity {
 
 	private void setConnections() {
 		tecomBTN = (Button) findViewById(R.id.instructionActivityTECOMBTN);
-		rateBTN = (Button) findViewById(R.id.instructionActivityRateBTN);
 		mcoBTN = (Button) findViewById(R.id.instructionActivityMCO1BTN);
 		bcaBTN = (Button) findViewById(R.id.instructionActivityMCO2BTN);
 		
-		
 		adView = (AdView)this.findViewById(R.id.instructionsAdView);
 	      
-	    request = new AdRequest();
-		request.setTesting(false);
-		adView.loadAd(request);	
+		if(!isPremium){
+			 request = new AdRequest();
+				request.setTesting(false);
+				adView.loadAd(request);
+		}else{
+			adView.setVisibility(View.INVISIBLE);
+			
+		}
+	
+	    
 	}
 
 	private void setOnClickListeners() {
-		rateBTN.setOnClickListener(new OnClickListener(){
-
-			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setData(Uri.parse("market://details?id=com.andrios.marinepft"));
-				startActivity(intent);
-
-				
-			}
-			
-		});
 		mcoBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {

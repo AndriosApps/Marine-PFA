@@ -2,5 +2,8 @@
 <resources>
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">Marine PFT</string>
+    <string name="dev_name">Andrios</string>
+    <string name="dev_long_name">Andrios Apps</string>
     <string name="ga_api_key">UA-23366060-3</string>
+    <string name="title_instructions">Instructions</string>
 </resources>
