@@ -43,6 +43,7 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 	AndriosData mData;
 	Profile profile;
 	GoogleAnalyticsTracker tracker;
+	String market;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,10 +55,14 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
         AppRater.app_launched(this);
         setConnections();
         setOnClickListeners();
-        restoreTransactions();
+        if(market.equals("amazon")){
+        	premium = true;
+        }else{
+            restoreTransactions();
+        	updateOwnedItems();
+        }
         readData();
         mData = new AndriosData();
-    	updateOwnedItems();
     	testProfile();
     	setTracker();
     }
@@ -119,7 +124,8 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 		calcBTN = (Button) findViewById(R.id.mainActivityCalculatorsBTN);
 		aboutBTN = (Button) findViewById(R.id.mainActivityAboutBTN);
 		instructionBTN = (Button) findViewById(R.id.mainActivityInstructionsBTN);
-		
+
+		market = getResources().getString(R.string.market);
 	}
 
 

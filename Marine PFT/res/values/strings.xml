@@ -6,4 +6,5 @@
     <string name="dev_long_name">Andrios Apps</string>
     <string name="ga_api_key">UA-23366060-3</string>
     <string name="title_instructions">Instructions</string>
+    <string name="market">amazon</string>
 </resources>
