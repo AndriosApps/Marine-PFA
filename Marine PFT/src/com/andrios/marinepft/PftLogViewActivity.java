@@ -389,7 +389,15 @@ public void shareLog(){
 			  
 			picMessageIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(downloadedPic)); 
 			picMessageIntent.putExtra(Intent.EXTRA_SUBJECT, "AndriOS Apps Marine PFT app for Android");
-			picMessageIntent.putExtra(Intent.EXTRA_TEXT, "PFT Score: " + entry.getTotalScore() + " @Andrios_Apps http://bit.ly/q83uCr #USMC");
+			String market = getResources().getString(R.string.market);
+			if(market.equals("amazon")){
+				picMessageIntent.putExtra(Intent.EXTRA_TEXT, "PFT Score: " + entry.getTotalScore() + " @Andrios_Apps http://www.amazon.com/gp/mas/dl/android?p=com.andrios.marinepft #USMC");
+			}else{
+				picMessageIntent.putExtra(Intent.EXTRA_TEXT, "PFT Score: " + entry.getTotalScore() + " @Andrios_Apps http://bit.ly/q83uCr #USMC");
+			}
+			
+			
+			
 			 tracker.trackEvent(
 			            "Social",  // Category
 			            "Share",  // Action

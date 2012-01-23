@@ -286,6 +286,55 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 		ad.show();
 	}
 	
+	private void activateTrialDialog() {
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		LayoutInflater inflater = LayoutInflater.from(this);
+		final View layout = inflater.inflate(R.layout.alert_dialog_premium_features, null);
+		
+		builder.setView(layout)
+				.setTitle("Activate Trial")
+				.setPositiveButton("Start!", new DialogInterface.OnClickListener(){
+					
+					
+					public void onClick(DialogInterface dialog, int which) {	
+						try {
+							FileOutputStream fos;
+							fos = MainActivity.this.openFileOutput("calendar", Context.MODE_PRIVATE);
+							ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+							Calendar c = Calendar.getInstance();
+							c.add(Calendar.MILLISECOND, 432000000);// add five days to calendar. 
+							oos.writeObject(c);
+
+							oos.close();
+							fos.close();
+						
+						} catch (IOException ee) {
+							ee.printStackTrace();
+							
+						}
+						
+						Intent intent = new Intent(getApplicationContext(), LogActivity.class);
+						mData.setAge(profile.getAge());
+						mData.setGender(profile.isMale());
+						System.out.println("Main Age" + mData.getAge());
+						intent.putExtra("data", mData);
+						startActivity(intent);
+					}
+				})
+				.setNegativeButton("Wait", new DialogInterface.OnClickListener(){
+
+					public void onClick(DialogInterface dialog, int which) {
+						
+						
+					}
+					
+				});
+		AlertDialog ad = builder.create();
+		ad.show();
+	}
+	
 	private void readData() {
 		
 		try {
@@ -306,39 +355,24 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 
 	
 	private boolean trial(){
-		try {
-			FileInputStream fis = openFileInput("calendar");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			Calendar endTrial = (Calendar) ois.readObject();
-			ois.close();
-			fis.close();
-			if(Calendar.getInstance().after(endTrial)){
-				return false;
-			}else{
-				Toast.makeText(MainActivity.this, "Premium Features Trial",
-						Toast.LENGTH_SHORT).show();
-				return true;
-			}
-		} catch (Exception e) {
-			try {
-				FileOutputStream fos;
-				fos = MainActivity.this.openFileOutput("calendar", Context.MODE_PRIVATE);
-				ObjectOutputStream oos = new ObjectOutputStream(fos);
-
-				Calendar c = Calendar.getInstance();
-				c.add(Calendar.DAY_OF_YEAR, 5);
-				oos.writeObject(c);
-
-				oos.close();
-				fos.close();
-				return true;
-			} catch (IOException ee) {
-				ee.printStackTrace();
-				
-			}
-			
-		
-	}
+//		try {
+//			FileInputStream fis = openFileInput("calendar");
+//			ObjectInputStream ois = new ObjectInputStream(fis);
+//			Calendar endTrial = (Calendar) ois.readObject();
+//			ois.close();
+//			fis.close();
+//			if(Calendar.getInstance().after(endTrial)){
+//				return false;
+//			}else{
+//				Toast.makeText(MainActivity.this, "Premium Features Trial",
+//						Toast.LENGTH_SHORT).show();
+//				return true;
+//			}
+//		} catch (Exception e) {
+//			
+//			activateTrialDialog();
+//		
+//	}
 		return false;
 	}
 
